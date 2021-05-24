@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 public class DiceButton : MonoBehaviour
 {
-    public DiceButton instance;
+    public PlayerScript playerScript;
     public GameObject Move_Button;
     public int Move_result1;
     public int Move_result2;
@@ -23,6 +23,7 @@ public class DiceButton : MonoBehaviour
 
     public void Move_click()
     {
+        playerScript.dice_select = true;
         Move_result1 = Random.Range(1, 7);//// 今回は１〜６の目が出るダイス
         Move_result2 = Random.Range(1, 7);//// 今回は１〜６の目が出るダイス
 
