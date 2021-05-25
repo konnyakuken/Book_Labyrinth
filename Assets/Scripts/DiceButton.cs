@@ -28,6 +28,6 @@ public class DiceButton : MonoBehaviour
         Move_result2 = Random.Range(1, 7);//// 今回は１〜６の目が出るダイス
 
         Debug.Log("1:"+Move_result1);
-        Debug.Log("2:" + Move_result2);
+        //Debug.Log("2:" + Move_result2);
     }
 }
