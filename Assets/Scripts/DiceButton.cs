@@ -11,6 +11,7 @@ public class DiceButton : MonoBehaviour
     public int Move_result2;
     public Text move_text1;
     public Text move_text2;
+    public int select_num = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,13 +26,29 @@ public class DiceButton : MonoBehaviour
 
     public void Move_click()
     {
-        playerScript.dice_select = true;
+        
         Move_result1 = Random.Range(1, 7);//// 今回は１〜６の目が出るダイス
         Move_result2 = Random.Range(1, 7);//// 今回は１〜６の目が出るダイス
 
-        
-
-        Debug.Log("1:"+Move_result1);
+        move_text1.text = Move_result1.ToString();
+        move_text2.text = Move_result2.ToString();
+        //Debug.Log("1:"+Move_result1);
         //Debug.Log("2:" + Move_result2);
+    }
+    public void Move1 (){
+        select_num = Move_result1;
+        move_text1.text = "select";
+        move_text2.text = "select";
+        playerScript.dice_select = true;
+        
+    }
+
+    public void Move2()
+    {
+        select_num = Move_result2;
+        move_text2.text = "select";
+        move_text1.text = "select";
+        playerScript.dice_select = true;
+        
     }
 }
