@@ -5,8 +5,11 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     public DiceButton diceButton;
-    public Map map;
+    public Mapscript map;
+    
     public GameObject player;//プレイヤーの現在地を配列で表現,onoff
+    public GameObject under_mass;
+
     public int player_now =0;//現在地
     public int mass_max = 21; 
     int move_mass = 0;
@@ -16,8 +19,9 @@ public class PlayerScript : MonoBehaviour
     int branch_flag = 0;
 
     Vector3 start_position;
-    Vector3 end_positon;
-
+    Vector3 next_positon;
+    public  bool start_move=true;//最初動かすための処理
+    public float nextMove = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,128 +34,126 @@ public class PlayerScript : MonoBehaviour
         if (dice_select== true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
         {
             move_mass = diceButton.Move_result1;//diceのダイスの出目
+            start_position = transform.position;
+            next_positon = transform.position;
             Branch();
             dice_select = false;
         }
 
         if (move_mass >= 1&&branch_flag==0)//移動処理
         {
-            transform.position=Vector3.Lerp(start_position, end_positon, 1);
+            transform.position=Vector3.Lerp(start_position, next_positon, 1);
         }else if (move_mass == 0)
         {
             Time.timeScale = 1;
         }
 
 
-        if (branch_flag == 1)//スタートの分岐処理
-        {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                start_position = map.massGameObjects[player_now].transform.position;
-                start_position.y += 0.65f;//マスを参照しているので埋まらないようにｙ軸プラスしている。
-                end_positon = map.massGameObjects[player_now + 1].transform.position;
-                end_positon.y += 0.65f;
-                branch_flag = 0;
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                player_now = 22;
-                start_position = map.massGameObjects[0].transform.position;
-                start_position.y += 0.65f;
-                end_positon = map.massGameObjects[player_now].transform.position;
-                end_positon.y += 0.65f;
-                branch_flag = 0;
-            }
-        }else if (branch_flag == 2)//分岐２右下
-        {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                start_position = map.massGameObjects[player_now].transform.position;
-                start_position.y += 0.65f;
-                end_positon = map.massGameObjects[player_now + 1].transform.position;
-                end_positon.y += 0.65f;
-                branch_flag = 0;
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                player_now = 36;
-                start_position = map.massGameObjects[4].transform.position;
-                start_position.y += 0.65f;
-                end_positon = map.massGameObjects[player_now].transform.position;
-                end_positon.y += 0.65f;
-                branch_flag = 0;
-            }
-        }
         
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnCollisionExit(Collision col)
     {
-        if(collision.gameObject.tag == "Ground"|| collision.gameObject.tag == "Start")
+        start_position = next_positon;
+        int count = 0;
+        //分岐があるのか判定
+        if (col.gameObject.GetComponent<MassManager>().isLeft == true)
+            count++;
+        else if (col.gameObject.GetComponent<MassManager>().isRight == true)
+            count++;
+        else if (col.gameObject.GetComponent<MassManager>().isUp == true)
+            count++;
+        else if (col.gameObject.GetComponent<MassManager>().isDown == true)
+            count++;
+        Debug.Log(count);
+
+        if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Start")
         {
-            
-            
-            player_now += 1;//スタート地点の処理も後で入れる
-            Invoke("Branch", 0.3f);
-            //マスとの設置判定からどれだけ移動したか把握する
-            move_mass -= 1;
-            //Branch();
+            if (count == 1)
+            {
+                if (col.gameObject.GetComponent<MassManager>().isLeft == true)//次の座標へプラス
+                    next_positon.x += col.gameObject.GetComponent<MassManager>().isLeft_mass;
+                else if (col.gameObject.GetComponent<MassManager>().isRight == true)
+                    next_positon.x += col.gameObject.GetComponent<MassManager>().isRight_mass;
+                else if (col.gameObject.GetComponent<MassManager>().isUp == true)
+                    next_positon.z += col.gameObject.GetComponent<MassManager>().isUp_mass;
+                else if (col.gameObject.GetComponent<MassManager>().isDown == true)
+                    next_positon.z += col.gameObject.GetComponent<MassManager>().isDown_mass;
+
+
+
+                //massname = col.gameObject.name;//移動させる名前を取得
+                //under_mass = col.GetComponent<gameObject>();
+
+                //player_now += 1;//スタート地点の処理も後で入れる
+                //Invoke("Branch", 0.3f);
+                //マスとの設置判定からどれだけ移動したか把握する
+                move_mass -= 1;
+                //Branch();
+            }
+            else
+            {
+
+            }
+
 
 
         }
-        
+
     }
 
-    private void OnCollisionStay (Collision collision2)
+    private void OnCollisionEnter(Collision collision)//初回（サイコロを振った時の動作を何とかしたい）
     {
-        //start_position = collision2.gameObject.position;
+        
+        if (start_move == true)
+        {
+            int count = 0;
+            //分岐があるのか判定
+            if (collision.gameObject.GetComponent<MassManager>().isLeft == true)
+                count++;
+            else if (collision.gameObject.GetComponent<MassManager>().isRight == true)
+                count++;
+            else if (collision.gameObject.GetComponent<MassManager>().isUp == true)
+                count++;
+            else if (collision.gameObject.GetComponent<MassManager>().isDown == true)
+                count++;
+            Debug.Log(count);
+
+
+            if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Start")
+            {
+                if (count == 1)
+                {
+                    if (collision.gameObject.GetComponent<MassManager>().isLeft == true)//次の座標へプラス
+                        next_positon.x += collision.gameObject.GetComponent<MassManager>().isLeft_mass;
+                    else if (collision.gameObject.GetComponent<MassManager>().isRight == true)
+                        next_positon.x += collision.gameObject.GetComponent<MassManager>().isRight_mass;
+                    else if (collision.gameObject.GetComponent<MassManager>().isUp == true)
+                        next_positon.z += collision.gameObject.GetComponent<MassManager>().isUp_mass;
+                    else if (collision.gameObject.GetComponent<MassManager>().isDown == true)
+                        next_positon.z += collision.gameObject.GetComponent<MassManager>().isDown_mass;
+
+                    //massname = col.gameObject.name;//移動させる名前を取得
+                    //under_mass = col.GetComponent<gameObject>();
+
+                    //player_now += 1;//スタート地点の処理も後で入れる
+                    //Invoke("Branch", 0.3f);
+                    //マスとの設置判定からどれだけ移動したか把握する
+                    move_mass -= 1;
+                    //Branch();
+                }
+                else
+                {
+                }
+            }
+        }
+
     }
 
     public void Branch()
     {
-        switch (player_now)//分岐の処理
-        {
-            case 21://スタートへ戻る処理
-                player_now = 0;
-                start_position = map.massGameObjects[21].transform.position;
-                start_position.y += 0.65f;//スタート地点
-                end_positon = map.massGameObjects[0].transform.position;
-                end_positon.y += 0.65f;//ゴール地点
-                break;
-            case 0: //スタート分岐
-                Debug.Log("何処へ行く？");
-                branch_flag = 1;
-
-                break;
-            case 4: //分岐2
-                Debug.Log("何処へ行く？");
-                branch_flag = 2;
-
-                break;
-            case 38: //右下合流
-                player_now = 28;
-                start_position = map.massGameObjects[38].transform.position;
-                start_position.y += 0.65f;
-                end_positon = map.massGameObjects[player_now].transform.position;
-                end_positon.y += 0.65f;
-
-                break;
-            case 35: //右合流
-                player_now = 7;
-                start_position = map.massGameObjects[35].transform.position;
-                start_position.y += 0.65f;
-                end_positon = map.massGameObjects[player_now].transform.position;
-                end_positon.y += 0.65f;
-
-                break;
-
-            default: //その他
-               
-                start_position = map.massGameObjects[player_now].transform.position;
-                start_position.y += 0.65f;
-                end_positon = map.massGameObjects[player_now + 1].transform.position;
-                end_positon.y += 0.65f;
-                break;
-        }
+        
     }
+
+    
 }
