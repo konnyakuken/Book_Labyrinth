@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Start
   - Ground
+  - Plus
+  - Minus
+  - Random
+  - Warp
   layers:
   - Default
   - TransparentFX

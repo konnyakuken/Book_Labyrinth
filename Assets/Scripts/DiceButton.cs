@@ -51,4 +51,9 @@ public class DiceButton : MonoBehaviour
         playerScript.dice_select = true;
         
     }
+
+    public void Stop_start()
+    {
+        playerScript.move=false;
+    }
 }
