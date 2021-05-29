@@ -5,7 +5,10 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 public class DiceButton : MonoBehaviour
 {
-    public PlayerScript playerScript;
+    public TurnManager turnManager;
+
+    public GameObject[] player;
+
     public GameObject Move_Button;
     public int Move_result1;
     public int Move_result2;
@@ -32,15 +35,14 @@ public class DiceButton : MonoBehaviour
 
         move_text1.text = Move_result1.ToString();
         move_text2.text = Move_result2.ToString();
-        //Debug.Log("1:"+Move_result1);
-        //Debug.Log("2:" + Move_result2);
     }
     public void Move1 (){
         select_num = Move_result1;
         move_text1.text = "select";
         move_text2.text = "select";
-        playerScript.dice_select = true;
-        
+        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
+        player[0].GetComponent<PlayerScript>().dice_select = true;
+
     }
 
     public void Move2()
@@ -48,12 +50,14 @@ public class DiceButton : MonoBehaviour
         select_num = Move_result2;
         move_text2.text = "select";
         move_text1.text = "select";
-        playerScript.dice_select = true;
-        
+        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
+        player[0].GetComponent<PlayerScript>().dice_select = true;
+
     }
 
     public void Stop_start()
     {
-        playerScript.move=false;
+        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
+        player[0].GetComponent<PlayerScript>().dice_select = true;
     }
 }

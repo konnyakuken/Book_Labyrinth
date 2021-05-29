@@ -6,22 +6,22 @@ public class PlayerScript : MonoBehaviour
 {
     public DiceButton diceButton;
     public Mapscript map;
+    public TurnManager turnManager;
 
     public GameObject player;//プレイヤーの現在地を配列で表現,onoff
-    public GameObject under_mass;
+    
 
-    public int player_now = 0;//現在地
+     int player_now = 0;//現在地
 
     int move_mass = 0;
     public bool my_turn = false;
     public bool dice_select = false;//サイコロが来た時
     public bool move = false;//移動中かどうかの判定
-    public float speed = 1;
+    float speed = 1;
 
-
+    public bool turn_end = false;//ターン切り替えの判定
     Vector3 start_position;
     Vector3 next_positon;
-    bool start_move = true;//最初動かすための処理
 
     bool branch_flag = false;
     bool branch_Left = false;//分岐時何処があるのかを把握
@@ -32,57 +32,68 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         next_positon.y += 0.65f;
+        turn_end = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
+        if (my_turn == true)
         {
-            move_mass = diceButton.select_num;//diceのダイスの出目
-            
-            start_position = transform.position;
-
-            dice_select = false;
-            move = true;
-        }
-
-        if (move == true)//移動処理
-                         //move_mass >= 1&&branch_flag==0
-        {
-            transform.position = Vector3.Lerp(start_position, next_positon, 1f);
-        }
-        else if (move_mass == 0)
-        {
-            Time.timeScale = 1;
-            move = false;
-            
-        }
-
-        if (branch_flag == true)//とりあえず十字キーで移動
-        {
-            if (branch_Left == true && Input.GetKeyDown(KeyCode.LeftArrow))
+            if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
             {
-                next_positon.x += -2.1f;
-                branch_flag = false;
+                move_mass = diceButton.select_num;//diceのダイスの出目
+
+                start_position = transform.position;
+
+                dice_select = false;
+                move = true;
+                turn_end = true;
             }
-            else if (branch_Right == true && Input.GetKeyDown(KeyCode.RightArrow))
+
+            if (move == true)//移動処理
+                             //move_mass >= 1&&branch_flag==0
             {
-                next_positon.x += 2.1f;
-                branch_flag = false;
+                transform.position = Vector3.Lerp(start_position, next_positon, 1f);
             }
-            else if (branch_Up == true && Input.GetKeyDown(KeyCode.UpArrow))
+            else if (move_mass == 0)
             {
-                next_positon.z += 2.1f;
-                branch_flag = false;
+                Time.timeScale = 1;
+                move = false;
+                
+
             }
-            else if (branch_Down == true && Input.GetKeyDown(KeyCode.DownArrow))
+
+            if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true)//ターン終了処理
             {
-                next_positon.z += -2.1f;
-                branch_flag = false;
+                //ターン終了処理、マス効果発動後に後で変更
+                Invoke("SwitchPlayer", 1f);
+            }
+
+            if (branch_flag == true)//とりあえず十字キーで移動
+            {
+                if (branch_Left == true && Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    next_positon.x += -2.1f;
+                    branch_flag = false;
+                }
+                else if (branch_Right == true && Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    next_positon.x += 2.1f;
+                    branch_flag = false;
+                }
+                else if (branch_Up == true && Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    next_positon.z += 2.1f;
+                    branch_flag = false;
+                }
+                else if (branch_Down == true && Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    next_positon.z += -2.1f;
+                    branch_flag = false;
+                }
             }
         }
-
 
     }
 
@@ -156,4 +167,13 @@ public class PlayerScript : MonoBehaviour
 
     }
 
+
+    public void SwitchPlayer()
+    {
+        turn_end = false;
+        turnManager.turn_switching = true;
+        my_turn = false;
+        //this.gameObject.SetActive(false);
+        turnManager.turn_switch();
+    }
 }
