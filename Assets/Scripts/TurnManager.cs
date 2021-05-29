@@ -13,8 +13,13 @@ public class TurnManager : MonoBehaviour
     [SerializeField]
     public GameObject[] player;
 
+    [SerializeField]
+    public GameObject[] sleep_player;
+
     public Text turn_countText;
     GameObject playerManager;
+
+    Vector3 sleep_position;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,31 +38,20 @@ public class TurnManager : MonoBehaviour
     void Update()
     {
 
-        /*
-        if (turn_switching == true)
-        {
-
-            currentPlayer += 1;
-            Debug.Log(currentPlayer % 4);
-            turn = (currentPlayer / 4) + 1;//ターン数の確認
-            turn_countText.text = "ターン数:" + turn;
-
-            player[currentPlayer % 4].SetActive(true);
-            player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn = true;
-            turn_switching = false;
-        }*/
-
 
     }
 
     public void turn_switch()
     {
+        sleep_player[currentPlayer % 4].transform.position= player[currentPlayer % 4].transform.position;
+        sleep_player[currentPlayer % 4].SetActive(true);//待機中のオブジェクトをonに
         currentPlayer += 1;
         Debug.Log(currentPlayer % 4);
         turn = (currentPlayer / 4) + 1;//ターン数の確認
         turn_countText.text = "ターン数:" + turn;
 
-        player[currentPlayer % 4].SetActive(true);
+        sleep_player[currentPlayer % 4].SetActive(false);
+        player[currentPlayer % 4].SetActive(true);//プレイヤー表示の切り替え
         player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn = true;
     }
 }

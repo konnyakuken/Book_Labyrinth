@@ -38,12 +38,13 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (my_turn == true)
         {
             if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
             {
                 move_mass = diceButton.select_num;//diceのダイスの出目
-
+                //move_mass -= 1;//何故か移動が１マス多いので仮実装
                 start_position = transform.position;
 
                 dice_select = false;
@@ -67,7 +68,7 @@ public class PlayerScript : MonoBehaviour
             if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true)//ターン終了処理
             {
                 //ターン終了処理、マス効果発動後に後で変更
-                Invoke("SwitchPlayer", 1f);
+                SwitchPlayer();
             }
 
             if (branch_flag == true)//とりあえず十字キーで移動
@@ -99,6 +100,7 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
+        Debug.Log(move_mass);
         start_position = next_positon;
 
         branch_Left = false;//初期化
@@ -144,12 +146,10 @@ public class PlayerScript : MonoBehaviour
                 else if (col.gameObject.GetComponent<MassManager>().isDown == true)
                     next_positon.z += col.gameObject.GetComponent<MassManager>().isDown_mass;
 
-                //Debug.Log(next_positon);
-                //player_now += 1;//スタート地点の処理も後で入れる
-                //Invoke("Branch", 0.3f);
+                
                 //マスとの設置判定からどれだけ移動したか把握する
                 move_mass -= 1;
-                //Branch();
+                
             }
             else
             {
@@ -173,7 +173,8 @@ public class PlayerScript : MonoBehaviour
         turn_end = false;
         turnManager.turn_switching = true;
         my_turn = false;
-        //this.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
+        
         turnManager.turn_switch();
     }
 }

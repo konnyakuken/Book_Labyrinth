@@ -8,8 +8,9 @@ public class DiceButton : MonoBehaviour
     public TurnManager turnManager;
 
     public GameObject[] player;
-
+    [SerializeField]
     public GameObject Move_Button;
+
     public int Move_result1;
     public int Move_result2;
     public Text move_text1;
@@ -24,7 +25,7 @@ public class DiceButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 
     public void Move_click()
@@ -40,8 +41,8 @@ public class DiceButton : MonoBehaviour
         select_num = Move_result1;
         move_text1.text = "select";
         move_text2.text = "select";
-        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
-        player[0].GetComponent<PlayerScript>().dice_select = true;
+        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
+        //player[0].GetComponent<PlayerScript>().dice_select = true;
 
     }
 
@@ -50,14 +51,14 @@ public class DiceButton : MonoBehaviour
         select_num = Move_result2;
         move_text2.text = "select";
         move_text1.text = "select";
-        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
-        player[0].GetComponent<PlayerScript>().dice_select = true;
+        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
+        //player[0].GetComponent<PlayerScript>().dice_select = true;
 
     }
 
     public void Stop_start()
     {
-        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
-        player[0].GetComponent<PlayerScript>().dice_select = true;
+        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
+        //player[0].GetComponent<PlayerScript>().dice_select = true;
     }
 }
