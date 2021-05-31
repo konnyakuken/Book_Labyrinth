@@ -19,25 +19,7 @@ public class NPCScript : PlayerScript
     // Update is called once per frame
     void Update()
     {
-        if (this.gameObject.GetComponent<PlayerScript>().computer == true)
-        {
-           if(selectmove == false)
-            {
-                DiceButton.Move_click();
-                selectmass = Random.Range(0, 2);
-                if (selectmass == 0)
-                {
-                    move_mass= DiceButton.Move_result1;
-                    selectmove = true;
-                }
-                else if (selectmass == 1)
-                {
-                    move_mass = DiceButton.Move_result2;
-                    selectmove = true;
-                }
-            }
-            
-        }
+        
 
 
 

@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour
     public bool computer = false;//comか否かを判定
     
 
-     int player_now = 0;//現在地
+    int player_now = 0;//現在地
 
     int move_mass = 0;
     public bool my_turn = false;
@@ -29,6 +29,11 @@ public class PlayerScript : MonoBehaviour
     bool branch_Right = false;
     bool branch_Up = false;
     bool branch_Down = false;
+
+    //NPC関係の変数宣言
+    int selectmass = 0;
+    bool selectmove = false;
+    public bool select_com = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,18 +47,31 @@ public class PlayerScript : MonoBehaviour
         
         if (my_turn == true)
         {
-            if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
+            if (computer == false)
             {
-                move_mass = diceButton.select_num;//diceのダイスの出目
-                //move_mass -= 1;//何故か移動が１マス多いので仮実装
-                start_position = transform.position;
+                if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
+                {
+                    move_mass = diceButton.select_num;//diceのダイスの出目
+                                                      //move_mass -= 1;//何故か移動が１マス多いので仮実装
+                    start_position = transform.position;
 
-                dice_select = false;
-                move = true;
+                    dice_select = false;
+                    move = true;
+                    turn_end = true;
+                    diceButton.move_Buttonflag = 2;//ボタンを非表示に
+
+                }
+            }
+            else if(computer==true&& select_com ==true)
+            {
+                NPC_move();
+                start_position = transform.position;
                 turn_end = true;
-                diceButton.move_Buttonflag = 2;//ボタンを非表示に
+                move = true;
+                select_com = false;
 
             }
+
 
             if (move == true)//移動処理
                              //move_mass >= 1&&branch_flag==0
@@ -156,8 +174,15 @@ public class PlayerScript : MonoBehaviour
             }
             else
             {
-                Debug.Log("何処へ行きますか？,十字キーで移動");
-                branch_flag = true;
+                if (computer == false)
+                {
+                    Debug.Log("何処へ行きますか？,十字キーで移動");
+                    branch_flag = true;
+                }else if(computer == true)
+                {
+                    NPC_Branch();
+                }
+                
 
             }
 
@@ -182,5 +207,73 @@ public class PlayerScript : MonoBehaviour
 
         diceButton.move_Buttonflag = 0;//ボタンを非表示に
 
+    }
+
+
+    public void NPC_move()
+    {
+            
+            
+            diceButton.Move_click();
+            selectmass = Random.Range(1, 3);
+            if (selectmass == 1)
+            {
+                move_mass = diceButton.Move_result1;
+                selectmove = true;
+            }
+            else if (selectmass == 2)
+            {
+                move_mass = diceButton.Move_result2;                    
+            }
+            
+
+    }
+
+    public void NPC_Branch()
+    {
+
+        selectmass = Random.Range(0, 4);
+        bool branch_com = false;
+        while (branch_com == false)//分岐内の判定チェック
+        {
+            if (branch_Left == true && selectmass == 0)
+            {
+                branch_com = true;
+                next_positon.x += -2.1f;
+            }
+            else if (branch_Right == true && selectmass == 1)
+            {
+                next_positon.x += 2.1f;
+                branch_com = true;
+            }else if (branch_Up == true&& selectmass == 2)
+            {
+                next_positon.z += 2.1f;
+                branch_com = true;
+
+            }else if(branch_Down == true&& selectmass == 3)
+            {
+                next_positon.z += -2.1f;
+                branch_com = true;
+            }
+            selectmass =  (selectmass+1)%4;
+            //Debug.Log(selectmass);
+        }
+        /*
+        switch (selectmass)
+        {
+            case 0:
+                next_positon.x += -2.1f;
+                break;
+            case 1:
+                next_positon.x += 2.1f;
+                break;
+            case 2:
+                next_positon.z += 2.1f;
+                break;
+            case 3:
+                next_positon.z += -2.1f;
+                break;
+
+        }*/
     }
 }

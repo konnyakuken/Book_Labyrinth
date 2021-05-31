@@ -62,5 +62,6 @@ public class TurnManager : MonoBehaviour
         player[currentPlayer % 4].SetActive(true);//プレイヤー表示の切り替え
         cam[currentPlayer % 4].SetActive(true);
         player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn = true;
+        player[currentPlayer % 4].GetComponent<PlayerScript>().select_com = true;
     }
 }
