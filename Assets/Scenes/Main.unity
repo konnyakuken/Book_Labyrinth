@@ -2902,7 +2902,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 440535120}
-  m_LocalRotation: {x: 0.32211444, y: -0.0025848278, z: 0.00087948993, w: 0.9466968}
+  m_LocalRotation: {x: 0.32211447, y: -0.002584869, z: 0.0008795041, w: 0.9466968}
   m_LocalPosition: {x: 0.13, y: 8.360001, z: -18.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3425,6 +3425,7 @@ MonoBehaviour:
   map: {fileID: 0}
   turnManager: {fileID: 599851364}
   player: {fileID: 553419897}
+  computer: 1
   my_turn: 0
   dice_select: 0
   move: 0
@@ -3972,12 +3973,16 @@ MonoBehaviour:
   - {fileID: 2041128695}
   - {fileID: 1455250125}
   - {fileID: 553419897}
-  Move_Button: {fileID: 1789475293}
+  move_Button: {fileID: 1789475293}
+  select_Button:
+  - {fileID: 1673796606}
+  - {fileID: 1803741836}
   Move_result1: 0
   Move_result2: 0
   move_text1: {fileID: 309608899}
   move_text2: {fileID: 649893794}
   select_num: 0
+  move_Buttonflag: 0
 --- !u!114 &599851361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9892,6 +9897,7 @@ MonoBehaviour:
   map: {fileID: 0}
   turnManager: {fileID: 599851364}
   player: {fileID: 1279715308}
+  computer: 0
   my_turn: 0
   dice_select: 0
   move: 0
@@ -10872,6 +10878,7 @@ MonoBehaviour:
   map: {fileID: 0}
   turnManager: {fileID: 599851364}
   player: {fileID: 1455250125}
+  computer: 1
   my_turn: 0
   dice_select: 0
   move: 0
@@ -14858,6 +14865,7 @@ MonoBehaviour:
   map: {fileID: 0}
   turnManager: {fileID: 599851364}
   player: {fileID: 2041128695}
+  computer: 1
   my_turn: 0
   dice_select: 0
   move: 0

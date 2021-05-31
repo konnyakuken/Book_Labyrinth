@@ -9,6 +9,7 @@ public class PlayerScript : MonoBehaviour
     public TurnManager turnManager;
 
     public GameObject player;//プレイヤーの現在地を配列で表現,onoff
+    public bool computer = false;//comか否かを判定
     
 
      int player_now = 0;//現在地
@@ -50,6 +51,8 @@ public class PlayerScript : MonoBehaviour
                 dice_select = false;
                 move = true;
                 turn_end = true;
+                diceButton.move_Buttonflag = 2;//ボタンを非表示に
+
             }
 
             if (move == true)//移動処理
@@ -176,5 +179,8 @@ public class PlayerScript : MonoBehaviour
         this.gameObject.SetActive(false);
         
         turnManager.turn_switch();
+
+        diceButton.move_Buttonflag = 0;//ボタンを非表示に
+
     }
 }

@@ -9,23 +9,45 @@ public class DiceButton : MonoBehaviour
 
     public GameObject[] player;
     [SerializeField]
-    public GameObject Move_Button;
+    public GameObject move_Button;
+    [SerializeField]
+    public GameObject[] select_Button;
 
     public int Move_result1;
     public int Move_result2;
     public Text move_text1;
     public Text move_text2;
     public int select_num = 0;
+
+    public int move_Buttonflag = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        //Move_Button.SetActive(false);    
+        move_Button.SetActive(false);
+        select_Button[0].SetActive(false);
+        select_Button[1].SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+        //ボタンの表示切り替え
+        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 0)
+        {
+            move_Button.SetActive(true);
+        }else if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 1)
+        {
+            move_Button.SetActive(false);
+            select_Button[0].SetActive(true);
+            select_Button[1].SetActive(true);
+        }else if(move_Buttonflag == 2)
+        {
+            move_Button.SetActive(false);
+            select_Button[0].SetActive(false);
+            select_Button[1].SetActive(false);
+        }
     }
 
     public void Move_click()
@@ -36,6 +58,7 @@ public class DiceButton : MonoBehaviour
 
         move_text1.text = Move_result1.ToString();
         move_text2.text = Move_result2.ToString();
+        move_Buttonflag = 1;
     }
     public void Move1 (){
         select_num = Move_result1;
@@ -43,7 +66,7 @@ public class DiceButton : MonoBehaviour
         move_text2.text = "select";
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
         //player[0].GetComponent<PlayerScript>().dice_select = true;
-
+        
     }
 
     public void Move2()
@@ -53,7 +76,7 @@ public class DiceButton : MonoBehaviour
         move_text1.text = "select";
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
         //player[0].GetComponent<PlayerScript>().dice_select = true;
-
+        
     }
 
     public void Stop_start()
