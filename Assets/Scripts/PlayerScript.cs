@@ -168,8 +168,7 @@ public class PlayerScript : MonoBehaviour
                     next_positon.z += col.gameObject.GetComponent<MassManager>().isDown_mass;
 
                 
-                //マスとの設置判定からどれだけ移動したか把握する
-                move_mass -= 1;
+
                 
             }
             else
@@ -185,7 +184,8 @@ public class PlayerScript : MonoBehaviour
                 
 
             }
-
+            //マスとの設置判定からどれだけ移動したか把握する
+            move_mass -= 1;
 
         }
         if (move_mass <= 0)

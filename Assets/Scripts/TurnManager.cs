@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class TurnManager : MonoBehaviour
 {
     public int turn = 0;//ターン管理　スタート停止も判定
+    public int last_turn = 0;
+    public int count = 1;
                         // 現在のプレイヤー番号
     public int currentPlayer = 0;
     public bool turn_switching = false;//ターン切り替え処理中かどうか
@@ -21,6 +23,9 @@ public class TurnManager : MonoBehaviour
 
     public Text turn_countText;
     GameObject playerManager;
+
+    public int[] page=new int[4] {50,50,50,50};
+    public Text[] pageText;
 
     Vector3 sleep_position;
     // Start is called before the first frame update
@@ -39,6 +44,18 @@ public class TurnManager : MonoBehaviour
         cam[1].SetActive(false);
         cam[2].SetActive(false);
         cam[3].SetActive(false);
+
+        
+        if (last_turn != turn)
+        {
+            if (turn % 3 == 0)//3ターン毎に+１する
+                count++;
+            for (int i = 0; i < 4; i++)
+                page[i] += count;
+            last_turn = turn;
+        }
+        for (int i = 0; i < 4; i++)
+            pageText[i].text = page[i].ToString();
     }
 
     // Update is called once per frame
@@ -61,7 +78,27 @@ public class TurnManager : MonoBehaviour
         sleep_player[currentPlayer % 4].SetActive(false);
         player[currentPlayer % 4].SetActive(true);//プレイヤー表示の切り替え
         cam[currentPlayer % 4].SetActive(true);
-        player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn = true;
+        Invoke("delay_player", 2.5f);
         player[currentPlayer % 4].GetComponent<PlayerScript>().select_com = true;
+
+
+        if (last_turn != turn)
+        {
+            if (turn % 3 == 0)//3ターン毎に+１する
+                count++;
+            for (int i = 0; i < 4; i++)
+                page[i] += count;
+            last_turn = turn;
+        }
+
+        //ページ数の更新
+        for (int i = 0; i < 4; i++)
+            pageText[i].text = page[i].ToString();
+    }
+
+
+    public void delay_player()
+    {
+        player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn = true;
     }
 }
