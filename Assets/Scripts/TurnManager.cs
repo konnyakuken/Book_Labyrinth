@@ -78,7 +78,7 @@ public class TurnManager : MonoBehaviour
         sleep_player[currentPlayer % 4].SetActive(false);
         player[currentPlayer % 4].SetActive(true);//プレイヤー表示の切り替え
         cam[currentPlayer % 4].SetActive(true);
-        Invoke("delay_player", 2.5f);
+        Invoke("delay_player", 2.0f);
         player[currentPlayer % 4].GetComponent<PlayerScript>().select_com = true;
 
 

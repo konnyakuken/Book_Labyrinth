@@ -15,4 +15,10 @@ public class MassEffectScript : MonoBehaviour
     {
         
     }
+
+    public void Mass_status()
+    {
+
+    }
+
 }

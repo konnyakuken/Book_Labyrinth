@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4220585264820765203}
   m_Layer: 0
   m_Name: 'Nomal_mass '
-  m_TagString: Untagged
+  m_TagString: Nomal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -10,6 +10,8 @@ TagManager:
   - Minus
   - Random
   - Warp
+  - Nomal
+  - Move
   layers:
   - Default
   - TransparentFX
