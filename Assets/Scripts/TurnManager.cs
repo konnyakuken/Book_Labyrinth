@@ -21,11 +21,20 @@ public class TurnManager : MonoBehaviour
     [SerializeField]
     public GameObject[] sleep_player;
 
+    [SerializeField]
+    public GameObject create_bookButton;
+
+    [SerializeField]
+    public GameObject[] book_image;
+
     public Text turn_countText;
     GameObject playerManager;
 
     public int[] page=new int[4] {50,50,50,50};
     public Text[] pageText;
+    //public bool[] create_book=new bool[4] { false,false,false,false};
+
+
 
     Vector3 sleep_position;
     // Start is called before the first frame update
@@ -45,7 +54,8 @@ public class TurnManager : MonoBehaviour
         cam[2].SetActive(false);
         cam[3].SetActive(false);
 
-        
+        create_bookButton.SetActive(false);
+
         if (last_turn != turn)
         {
             if (turn % 3 == 0)//3ターン毎に+１する
@@ -54,14 +64,31 @@ public class TurnManager : MonoBehaviour
                 page[i] += count;
             last_turn = turn;
         }
+
         for (int i = 0; i < 4; i++)
             pageText[i].text = page[i].ToString();
-    }
+
+        for (int i = 0; i < 4; i++)
+            book_image[i].SetActive(false);
+     }
 
     // Update is called once per frame
     void Update()
     {
+        //ページ数の更新
+        for (int i = 0; i < 4; i++)
+            pageText[i].text = page[i].ToString();
 
+
+        if(page[currentPlayer % 4] >= 100&& player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn == true&& player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false)//100を超えたら本を作成するボタンをonにする
+        {
+            Debug.Log(page[currentPlayer % 4]);
+            if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)
+                create_bookButton.SetActive(true);
+            //else
+                
+        }else
+            create_bookButton.SetActive(false);
     }
 
     public void turn_switch()
@@ -91,9 +118,7 @@ public class TurnManager : MonoBehaviour
             last_turn = turn;
         }
 
-        //ページ数の更新
-        for (int i = 0; i < 4; i++)
-            pageText[i].text = page[i].ToString();
+        
     }
 
 

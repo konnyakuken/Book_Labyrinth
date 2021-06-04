@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 8896672312642041262}
   - component: {fileID: 8896672312642041263}
   m_Layer: 0
-  m_Name: 'Warp_mass '
+  m_Name: Warp_mass
   m_TagString: Warp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,14 +38,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8896672312642041260}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.1, y: 0.16, z: 0}
-  m_LocalScale: {x: 0.19, y: 0.19, z: 0.19}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0.55, z: 0}
+  m_LocalScale: {x: 0.0945, y: 0.2, z: 0.0953}
   m_Children:
   - {fileID: 8891850021918346341}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &8896672312642041249
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -126,7 +126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4897427805282112, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.6
+      value: -4.6
       objectReference: {fileID: 0}
     - target: {fileID: 4897427805282112, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_LocalPosition.y
@@ -134,7 +134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4897427805282112, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.9
+      value: 6.7
       objectReference: {fileID: 0}
     - target: {fileID: 4897427805282112, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_LocalRotation.w
@@ -166,7 +166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 102706317291859942, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_Text
-      value: "\uFF1F"
+      value: "\u24CC"
       objectReference: {fileID: 0}
     - target: {fileID: 102706317291859942, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_FontSize
@@ -182,7 +182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 102706317291859942, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_CharacterSize
-      value: 0.82
+      value: 0.66
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}

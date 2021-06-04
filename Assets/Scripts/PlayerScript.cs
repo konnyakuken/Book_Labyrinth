@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;  //DOTweenを使うときはこのusingを入れる
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class PlayerScript : MonoBehaviour
 {
     public DiceButton diceButton;
     public Mapscript map;
     public TurnManager turnManager;
-    //public MassEffectScript massEffectScript;
 
     public GameObject player;//プレイヤーの現在地を配列で表現,onoff
     public bool computer = false;//comか否かを判定
-    
 
+    public int start_count = 0;//初回以降の処理
 
-    int move_mass = 0;
+    public int move_mass = 0;
     public bool my_turn = false;//プレイヤー管理
     public bool dice_select = false;//サイコロが来た時
     public bool move = false;//移動中かどうかの判定
@@ -23,7 +24,7 @@ public class PlayerScript : MonoBehaviour
 
     public bool turn_end = false;//ターン切り替えの判定
 
-
+    public bool book_flag = false;//本を持っているかの処理
 
     bool branch_flag = false;
     bool branch_Left = false;//分岐時何処があるのかを把握
@@ -32,12 +33,12 @@ public class PlayerScript : MonoBehaviour
     bool branch_Down = false;
 
 
-    public int direction=4;
-    public int next_direction = 4;
+    Vector3 warp_position;
+    public int warp_mass;
 
     public int mass_name=6;//0=Nomal、1=Plus、2=Minus、3=Move、4=、Warp、5=Random、6=start
 
-    float now_x = 0;
+    float now_x = 0;//ワープ,Move用の値
     float now_z = 0;
     float next_x = 0;
     float next_z = 0;
@@ -83,14 +84,10 @@ public class PlayerScript : MonoBehaviour
 
             if (move == true)//移動処理                
             {
-
-
                 if (move_one == true&& branch_flag == false)
                 {
                     Move_DOTween();
                 }
-
-
             }
 
             if (move_mass == 0)
@@ -103,7 +100,7 @@ public class PlayerScript : MonoBehaviour
                 Mass_status();
                 Debug.Log(mass_name);
                 //ターン終了処理、マス効果発動後に後で変更
-                SwitchPlayer();
+                //SwitchPlayer();
             }
 
             if (branch_flag == true)//とりあえず十字キーで移動
@@ -166,7 +163,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision col)
+    private void OnCollisionEnter(Collision col)//ターン開始時にonCollisonEnterを判定することになってる？
     {
         //Debug.Log(move_mass);
 
@@ -200,11 +197,15 @@ public class PlayerScript : MonoBehaviour
         }
 
         //Debug.Log(count);
-        if(col.gameObject.tag == "Start")
+        if (col.gameObject.tag == "Start" && start_count >= 1)
         {
             Debug.Log("止まりますか？");
-            
+            diceButton.stop_button_flag = 1;//止まるボタンの表示
         }
+        else if (col.gameObject.tag == "Start")
+            start_count++;
+        else
+            diceButton.stop_button_flag = 0;
 
 
 
@@ -212,8 +213,10 @@ public class PlayerScript : MonoBehaviour
         {
             if (move_mass != 1)//最後に座標が+されないように
             {
+                //Debug.Log("Plus!!");
                 if (count == 1)
                 {//次の座標へプラス
+                   
                     if (col.gameObject.GetComponent<MassManager>().isLeft == true)
                         next_x -= 2.1f;
                     else if (col.gameObject.GetComponent<MassManager>().isRight == true)
@@ -242,7 +245,6 @@ public class PlayerScript : MonoBehaviour
 
 
                 }
-                //マスとの設置判定からどれだけ移動したか把握する
             }
             
         }
@@ -281,23 +283,47 @@ public class PlayerScript : MonoBehaviour
         switch (mass_name)
         {
             case 0:
-
+                SwitchPlayer();
                 break;
             case 1:
-                diceButton.Dice_Buttonflag = 1;
+
+                if (computer == false)
+                    diceButton.Dice_Buttonflag = 1;
                 break;
             case 2:
-                diceButton.Dice_Buttonflag = 2;
+                if (computer == false)
+                    diceButton.Dice_Buttonflag = 2;
 
                 break;
             case 3:
-
+                if (computer == false)
+                {
+                   diceButton.move_Buttonflag = 0;
+                   turn_end = false;
+                    transform.position=new Vector3(next_x, 0.68f, next_z);//oncollisonenterを発生させるため
+                }
+                else
+                {
+                    select_com = true;
+                    turn_end = false;
+                    transform.position = new Vector3(next_x, 0.68f, next_z);//oncollisonenterを発生させるため
+                }
                 break;
             case 4:
-
+                warp_mass=Random.Range(0, 69);
+                warp_position =  map.mass[warp_mass].transform.position;
+                warp_position.y = 0.6f;
+                transform.position = warp_position;
+                next_x = warp_position.x;
+                next_z= warp_position.z;
+                SwitchPlayer();
                 break;
             case 5:
-
+                mass_name = Random.Range(0, 4);
+                Mass_status();
+                break;
+            case 6:
+                SwitchPlayer();
                 break;
 
         }
