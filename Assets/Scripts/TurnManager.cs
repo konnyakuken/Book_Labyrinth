@@ -113,7 +113,7 @@ public class TurnManager : MonoBehaviour
         cam[currentPlayer % 4].SetActive(true);
         Invoke("delay_player", 2.0f);
         player[currentPlayer % 4].GetComponent<PlayerScript>().select_com = true;
-
+        Debug.Log("P" +( currentPlayer % 4+1)+"のターン");
 
         if (last_turn != turn)
         {

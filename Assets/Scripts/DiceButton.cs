@@ -100,9 +100,16 @@ public class DiceButton : MonoBehaviour
     {
         Dice_Effect = Random.Range(1, 7);// 今回は１〜６の目が出るダイス
         if(Dice_Buttonflag == 1)
-        turnManager.page[turnManager.currentPlayer % 4] += Dice_Effect*2;//出目×２のページを獲得
+        {
+            turnManager.page[turnManager.currentPlayer % 4] += Dice_Effect * 2;//出目×２のページを獲得
+            Debug.Log(Dice_Effect * 2+"枚のページを獲得！");
+        }
         else if(Dice_Buttonflag == 2)
+        {
             turnManager.page[turnManager.currentPlayer % 4] -= Dice_Effect * 2;//出目×２のページを失う
+            Debug.Log(Dice_Effect * 2 + "枚のページを紛失！");
+        }
+            
 
         if (turnManager.page[turnManager.currentPlayer % 4] <= 0)
             turnManager.page[turnManager.currentPlayer % 4] = 0;//マイナスにならないように調整

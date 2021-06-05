@@ -72,6 +72,7 @@ public class PlayerScript : MonoBehaviour
                 {
                     branch_on = false;
                     move_mass = diceButton.select_num;//diceのダイスの出目
+                    Debug.Log("出たマス数：" + move_mass);
                     dice_select = false;
                     move = true;
                     turn_end = true;
@@ -263,7 +264,7 @@ public class PlayerScript : MonoBehaviour
                             
                         //NPC_Branch();
                         //Invoke("NPC_Branch", 0.5f);
-                        Debug.Log("分岐！");
+                        //Debug.Log("分岐！");
                     }
 
 
@@ -288,7 +289,7 @@ public class PlayerScript : MonoBehaviour
             start_branch = false;
             //Debug.Log(transform.position);
             //Debug.Log("x座標"+next_x+",z座標"+ next_z);
-            Debug.Log(move_mass);
+            //Debug.Log(move_mass);
             if (move_mass == 0)
             {
                 move = false;
@@ -329,7 +330,7 @@ public class PlayerScript : MonoBehaviour
                     diceButton.Dice_Buttonflag = 1;
                     diceButton.Dice();
                 }
-                    
+                Debug.Log("Bounus!");
                 break;
             case 2:
                 if (computer == false)
@@ -339,7 +340,7 @@ public class PlayerScript : MonoBehaviour
                     diceButton.Dice_Buttonflag = 2;
                     diceButton.Dice();
                 }
-
+                Debug.Log("Minus!");
                 break;
             case 3:
                 if (computer == false)
@@ -356,9 +357,12 @@ public class PlayerScript : MonoBehaviour
                     turn_end = false;
                     re_moveNPC = true;
                 }
+                Debug.Log("Move!");
                 break;
             case 4:
-                warp_mass=Random.Range(0, 69);
+                Debug.Log("Warp!");
+                move_mass = 0;//念入れの代入（NPCがワープ後に動く挙動を見せたためとりあえず）
+                warp_mass =Random.Range(0, 69);
                 warp_position =  map.mass[warp_mass].transform.position;
                 warp_position.y = 0.6f;
                 transform.position = warp_position;
@@ -367,6 +371,7 @@ public class PlayerScript : MonoBehaviour
                 SwitchPlayer();
                 break;
             case 5:
+                Debug.Log("Random!");
                 mass_name = Random.Range(0, 4);
                 Mass_status();
                 break;
@@ -410,7 +415,7 @@ public class PlayerScript : MonoBehaviour
             {
                 move_mass = diceButton.Move_result2;                    
             }
-        Debug.Log("出た数" + move_mass);
+        Debug.Log("出たマス数:" + move_mass);
         if (re_moveNPC == true)
         {
             move_mass += 1;
