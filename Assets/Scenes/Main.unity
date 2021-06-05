@@ -3281,15 +3281,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3030061391661735071, guid: c26ba19d546007f49a98852894b1ac16, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3030061391661735071, guid: c26ba19d546007f49a98852894b1ac16, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3030061391661735071, guid: c26ba19d546007f49a98852894b1ac16, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3030061391661735071, guid: c26ba19d546007f49a98852894b1ac16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5287,7 +5287,7 @@ MonoBehaviour:
   - {fileID: 1411356769}
   - {fileID: 1247502593}
   turn_countText: {fileID: 757571589}
-  page: 32000000320000003200000032000000
+  page: 32000000640000003200000032000000
   pageText:
   - {fileID: 2110914540}
   - {fileID: 251290317}

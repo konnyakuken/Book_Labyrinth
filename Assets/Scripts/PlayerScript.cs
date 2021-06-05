@@ -89,7 +89,7 @@ public class PlayerScript : MonoBehaviour
 
             if (move == true)//移動処理                
             {
-                if (move_one == true&& branch_flag == false)
+                if (move_one == true&&branch_flag == false)
                 {
                     Move_DOTween();
                 }
@@ -236,15 +236,17 @@ public class PlayerScript : MonoBehaviour
                     if (computer == false)
                     {
                         Debug.Log("何処へ行きますか？,十字キーで移動");
-                        
                         move_one = false;
-                        if (start_branch == true)
-                        {
-                            branch_flag = true;
-                        }
-                        else
-                            branch_on = true;
+                        branch_flag = true;
+                        /* move_one = false;
+                         if (start_branch == true)
+                         {
+                             branch_flag = true;
+                         }
+                         else
+                             branch_on = true;*/
                     }
+
                     else if (computer == true)
                     {
                         move_one = false;
