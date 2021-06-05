@@ -33,6 +33,10 @@ public class PlayerScript : MonoBehaviour
     bool branch_Down = false;
 
 
+    public bool start_branch = true;//開始時の分岐用
+    public bool branch_on = false;//移動処理中に分岐しないようにしている
+
+
     Vector3 warp_position;
     public int warp_mass;
 
@@ -64,6 +68,7 @@ public class PlayerScript : MonoBehaviour
             {
                 if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
                 {
+                    branch_on = false;
                     move_mass = diceButton.select_num;//diceのダイスの出目
                     dice_select = false;
                     move = true;
@@ -98,9 +103,7 @@ public class PlayerScript : MonoBehaviour
             if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true)//ターン終了処理
             {
                 Mass_status();
-                Debug.Log(mass_name);
-                //ターン終了処理、マス効果発動後に後で変更
-                //SwitchPlayer();
+                //Debug.Log(mass_name);
             }
 
             if (branch_flag == true)//とりあえず十字キーで移動
@@ -233,14 +236,31 @@ public class PlayerScript : MonoBehaviour
                     if (computer == false)
                     {
                         Debug.Log("何処へ行きますか？,十字キーで移動");
-                        branch_flag = true;
+                        
                         move_one = false;
+                        if (start_branch == true)
+                        {
+                            branch_flag = true;
+                        }
+                        else
+                            branch_on = true;
                     }
                     else if (computer == true)
                     {
                         move_one = false;
-                        NPC_Branch();
+                        if (start_branch == true)
+                        {
+                            NPC_Branch();
+                        }
+                        else
+                        {
+                            //Invoke("NPC_Branch", 0.5f);
+                            branch_on = true;
+                        }
+                            
+                        //NPC_Branch();
                         //Invoke("NPC_Branch", 0.5f);
+                        Debug.Log("分岐！");
                     }
 
 
@@ -262,10 +282,10 @@ public class PlayerScript : MonoBehaviour
         this.transform.DOMove(new Vector3(next_x, 0.6f, next_z), 0.5f).OnComplete(() =>//移動終了後実行
         {
             move_mass -= 1;
-            //Debug.Log("OnComplete!");
+            start_branch = false;
             //Debug.Log(transform.position);
             //Debug.Log(next_x);
-            //Debug.Log(move_mass);
+            Debug.Log(move_mass);
             if (move_mass == 0)
             {
                 move = false;
@@ -274,6 +294,18 @@ public class PlayerScript : MonoBehaviour
             {
                 move_one = true;
             }
+
+        if (branch_on == true && computer == false)
+            {
+                branch_flag = true;
+                branch_on = false;
+            }
+            else if(branch_on == true && computer == true)
+            {
+                NPC_Branch();
+                branch_on = false;
+            }else
+                branch_on = false;
         });
     }
 
@@ -289,10 +321,21 @@ public class PlayerScript : MonoBehaviour
 
                 if (computer == false)
                     diceButton.Dice_Buttonflag = 1;
+                else
+                {//comの処理
+                    diceButton.Dice_Buttonflag = 1;
+                    diceButton.Dice();
+                }
+                    
                 break;
             case 2:
                 if (computer == false)
                     diceButton.Dice_Buttonflag = 2;
+                else
+                {//comの処理
+                    diceButton.Dice_Buttonflag = 2;
+                    diceButton.Dice();
+                }
 
                 break;
             case 3:
@@ -361,7 +404,8 @@ public class PlayerScript : MonoBehaviour
             {
                 move_mass = diceButton.Move_result2;                    
             }
-            //Debug.Log(move_mass);
+        Debug.Log("出た数"+move_mass);
+
 
     }
 
@@ -394,7 +438,7 @@ public class PlayerScript : MonoBehaviour
                 next_z -= 2.1f;
                 move_one = true;
                 branch_com = true;
-            }
+            }else
             selectmass =  (selectmass+1)%4;
 
         }

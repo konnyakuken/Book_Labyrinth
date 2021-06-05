@@ -4534,6 +4534,8 @@ MonoBehaviour:
   move: 0
   turn_end: 0
   book_flag: 0
+  start_branch: 1
+  branch_on: 0
   warp_mass: 0
   mass_name: 6
   select_com: 0
@@ -5181,7 +5183,6 @@ GameObject:
   - component: {fileID: 599851360}
   - component: {fileID: 599851363}
   - component: {fileID: 599851364}
-  - component: {fileID: 599851365}
   - component: {fileID: 599851366}
   m_Layer: 0
   m_Name: GameManager
@@ -5279,7 +5280,7 @@ MonoBehaviour:
   - {fileID: 2103846055}
   - {fileID: 878207224}
   - {fileID: 1793087295}
-  create_bookButton: {fileID: 1424505544}
+  create_book: {fileID: 1424505544}
   book_image:
   - {fileID: 1513048759}
   - {fileID: 1221203898}
@@ -5292,18 +5293,6 @@ MonoBehaviour:
   - {fileID: 251290317}
   - {fileID: 1451421817}
   - {fileID: 1647518404}
---- !u!114 &599851365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 599851359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed0f278215e0814c8d8a6d1d6d75a9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &599851366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13417,6 +13406,8 @@ MonoBehaviour:
   move: 0
   turn_end: 0
   book_flag: 0
+  start_branch: 1
+  branch_on: 0
   warp_mass: 0
   mass_name: 6
   select_com: 1
@@ -15502,6 +15493,8 @@ MonoBehaviour:
   move: 0
   turn_end: 0
   book_flag: 0
+  start_branch: 1
+  branch_on: 0
   warp_mass: 0
   mass_name: 6
   select_com: 0
@@ -21444,6 +21437,8 @@ MonoBehaviour:
   move: 0
   turn_end: 0
   book_flag: 0
+  start_branch: 1
+  branch_on: 0
   warp_mass: 0
   mass_name: 6
   select_com: 0

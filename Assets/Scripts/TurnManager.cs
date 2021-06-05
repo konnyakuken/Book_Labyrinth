@@ -22,7 +22,7 @@ public class TurnManager : MonoBehaviour
     public GameObject[] sleep_player;
 
     [SerializeField]
-    public GameObject create_bookButton;
+    public GameObject create_book;
 
     [SerializeField]
     public GameObject[] book_image;
@@ -54,7 +54,7 @@ public class TurnManager : MonoBehaviour
         cam[2].SetActive(false);
         cam[3].SetActive(false);
 
-        create_bookButton.SetActive(false);
+        create_book.SetActive(false);
 
         if (last_turn != turn)
         {
@@ -80,15 +80,21 @@ public class TurnManager : MonoBehaviour
             pageText[i].text = page[i].ToString();
 
 
-        if(page[currentPlayer % 4] >= 100&& player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn == true&& player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false)//100を超えたら本を作成するボタンをonにする
+        if (page[currentPlayer % 4] >= 100 && player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn == true && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)//100を超えたら本を作成するボタンをonにする
         {
             Debug.Log(page[currentPlayer % 4]);
             if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)
-                create_bookButton.SetActive(true);
+                create_book.SetActive(true);
             //else
-                
+
+        }
+        else if (page[currentPlayer % 4] >= 100 && player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn == true && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == true)
+        {
+            //100を超えたら本を作成するボタンをonにする)
+            GetComponent<DiceButton>().create_bookButton();
         }else
-            create_bookButton.SetActive(false);
+            create_book.SetActive(false);
+
     }
 
     public void turn_switch()
@@ -125,5 +131,6 @@ public class TurnManager : MonoBehaviour
     public void delay_player()
     {
         player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn = true;
+        player[currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
     }
 }
