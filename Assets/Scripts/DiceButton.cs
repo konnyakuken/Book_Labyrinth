@@ -79,11 +79,20 @@ public class DiceButton : MonoBehaviour
             dice_Text.text = "Minus";
         }
 
+
+
+
         if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && stop_button_flag == 1)
         {
             stop_Button.SetActive(true);
         }else if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && stop_button_flag == 0)
             stop_Button.SetActive(false);
+
+
+        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == true && player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().book_flag == true&& stop_button_flag == 1)
+        {//本を持ったコンピューター
+            Stop_mass();
+        }
 
     }
 

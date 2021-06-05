@@ -52,6 +52,8 @@ public class PlayerScript : MonoBehaviour
     int selectmass = 0;
     bool selectmove = false;//ダイスの選択
     public bool select_com = false;//初回の一回判定
+
+    public bool re_moveNPC = false;//moveを踏んだ後移動マスが-1になる為苦肉の策
     // Start is called before the first frame update
     void Start()
     {
@@ -77,7 +79,6 @@ public class PlayerScript : MonoBehaviour
                     move_one = true;
                 }
             }
-
             else if (computer == true && select_com == true)
             {
                 NPC_move();
@@ -286,7 +287,7 @@ public class PlayerScript : MonoBehaviour
             move_mass -= 1;
             start_branch = false;
             //Debug.Log(transform.position);
-            //Debug.Log(next_x);
+            //Debug.Log("x座標"+next_x+",z座標"+ next_z);
             Debug.Log(move_mass);
             if (move_mass == 0)
             {
@@ -344,14 +345,16 @@ public class PlayerScript : MonoBehaviour
                 if (computer == false)
                 {
                    diceButton.move_Buttonflag = 0;
-                   turn_end = false;
+                    turn_end = false;
                     transform.position=new Vector3(next_x, 0.68f, next_z);//oncollisonenterを発生させるため
+                    
                 }
                 else
                 {
+                    transform.position = new Vector3(next_x, 0.68f, next_z);//oncollisonenterを発生させるため
                     select_com = true;
                     turn_end = false;
-                    transform.position = new Vector3(next_x, 0.68f, next_z);//oncollisonenterを発生させるため
+                    re_moveNPC = true;
                 }
                 break;
             case 4:
@@ -378,6 +381,7 @@ public class PlayerScript : MonoBehaviour
 
     public void SwitchPlayer()
     {
+        re_moveNPC = false;
         turn_end = false;
         turnManager.turn_switching = true;
         my_turn = false;
@@ -406,7 +410,12 @@ public class PlayerScript : MonoBehaviour
             {
                 move_mass = diceButton.Move_result2;                    
             }
-        Debug.Log("出た数"+move_mass);
+        Debug.Log("出た数" + move_mass);
+        if (re_moveNPC == true)
+        {
+            move_mass += 1;
+        }
+        
 
 
     }

@@ -3752,7 +3752,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 440535120}
-  m_LocalRotation: {x: 0.32211444, y: -0.0025848278, z: 0.00087948993, w: 0.9466968}
+  m_LocalRotation: {x: 0.32211447, y: -0.002584869, z: 0.0008795041, w: 0.9466968}
   m_LocalPosition: {x: 0.13, y: 8.360001, z: -18.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4539,6 +4539,7 @@ MonoBehaviour:
   warp_mass: 0
   mass_name: 6
   select_com: 0
+  re_moveNPC: 0
 --- !u!54 &553419900
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5287,7 +5288,7 @@ MonoBehaviour:
   - {fileID: 1411356769}
   - {fileID: 1247502593}
   turn_countText: {fileID: 757571589}
-  page: 32000000640000003200000032000000
+  page: 32000000320000003200000032000000
   pageText:
   - {fileID: 2110914540}
   - {fileID: 251290317}
@@ -10902,7 +10903,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1059521968}
-  m_LocalRotation: {x: 0.32211444, y: -0.0025848278, z: 0.00087948993, w: 0.9466968}
+  m_LocalRotation: {x: 0.32211447, y: -0.002584869, z: 0.0008795041, w: 0.9466968}
   m_LocalPosition: {x: 0.13, y: 8.360001, z: -18.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -13411,6 +13412,7 @@ MonoBehaviour:
   warp_mass: 0
   mass_name: 6
   select_com: 1
+  re_moveNPC: 0
 --- !u!1001 &1281076784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15498,6 +15500,7 @@ MonoBehaviour:
   warp_mass: 0
   mass_name: 6
   select_com: 0
+  re_moveNPC: 0
 --- !u!54 &1455250128
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18481,7 +18484,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1776147443}
-  m_LocalRotation: {x: 0.32211447, y: -0.002584869, z: 0.0008795041, w: 0.9466968}
+  m_LocalRotation: {x: 0.32211444, y: -0.0025848278, z: 0.00087948993, w: 0.9466968}
   m_LocalPosition: {x: 0.13, y: 8.360001, z: -18.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -21442,6 +21445,7 @@ MonoBehaviour:
   warp_mass: 0
   mass_name: 6
   select_com: 0
+  re_moveNPC: 0
 --- !u!54 &2041128698
 Rigidbody:
   m_ObjectHideFlags: 0

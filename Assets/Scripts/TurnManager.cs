@@ -80,7 +80,7 @@ public class TurnManager : MonoBehaviour
             pageText[i].text = page[i].ToString();
 
 
-        if (page[currentPlayer % 4] >= 100 && player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn == true && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)//100を超えたら本を作成するボタンをonにする
+        if (page[currentPlayer % 4] >= 100  && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)//100を超えたら本を作成するボタンをonにする
         {
             Debug.Log(page[currentPlayer % 4]);
             if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)
