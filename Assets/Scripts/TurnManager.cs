@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class TurnManager : MonoBehaviour
 {
@@ -40,6 +41,22 @@ public class TurnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 1; i <= 3; i++)//1p以外は一回comに
+            player[1].GetComponent<PlayerScript>().computer = true;
+
+        if (titleScript.player_num == 1)//soroプレイ
+        {
+            player[0].GetComponent<PlayerScript>().computer = false;
+            titleScript.player_num = 0;
+        }
+        else if(titleScript.player_num == 2)//2人プレイ
+        {
+            player[0].GetComponent<PlayerScript>().computer = false;
+            int p2 = Random.Range(1, 4);
+            player[p2].GetComponent<PlayerScript>().computer = false;
+            titleScript.player_num = 0;
+        }
+
         player[1].SetActive(false);
         player[2].SetActive(false);
         player[3].SetActive(false);

@@ -22,6 +22,6 @@ public class resultScript : MonoBehaviour
     public void Retry()
     {
         DiceButton.winner = 0;
-        SceneManager.LoadScene("Main");//シーン切り替え
+        SceneManager.LoadScene("title");//シーン切り替え
     }
 }
