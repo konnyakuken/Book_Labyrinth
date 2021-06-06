@@ -36,6 +36,7 @@ public class PlayerScript : MonoBehaviour
     public bool start_branch = true;//開始時の分岐用
     public bool branch_on = false;//移動処理中に分岐しないようにしている
 
+    GameObject Hidden_massflag ;
 
     Vector3 warp_position;
     public int warp_mass;
@@ -107,39 +108,15 @@ public class PlayerScript : MonoBehaviour
 
             if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true)//ターン終了処理
             {
+                if (Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg==false)
+                {
+                    Hidden_massflag.GetComponent<MeshRenderer>().enabled=false;//MeshRendererをoffにする
+                    Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg = true;
+                }
                 Mass_status();
                 //Debug.Log(mass_name);
             }
-            /*
-            if (branch_flag == true)//とりあえず十字キーで移動
-            {
-                if (branch_Left == true && Input.GetKeyDown(KeyCode.LeftArrow))
-                {
-                    branch_flag = false;
-                    next_x -= 2.1f;
-                    move_one = true;
-                }
-                else if (branch_Right == true && Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    branch_flag = false;
-                    next_x += 2.1f;
-                    move_one = true;
-                }
-                else if (branch_Up == true && Input.GetKeyDown(KeyCode.UpArrow))
-                {
-                    branch_flag = false;
-                    next_z += 2.1f;
-                    move_one = true;
-                }
-                else if (branch_Down == true && Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    branch_flag = false;
-                    next_z -= 2.1f;
-                    move_one = true;
-
-                }
-            }
-            */
+            
         }
 
     }
@@ -166,10 +143,13 @@ public class PlayerScript : MonoBehaviour
             case "Random":
                 mass_name = 5;
                 break;
-            default:
+            case "Start":
                 mass_name = 6;
                 break;
         }
+
+        if(other.gameObject.tag=="Hidden")
+            Hidden_massflag = other.gameObject;
     }
 
     private void OnCollisionEnter(Collision col)//ターン開始時にonCollisonEnterを判定することになってる？
@@ -356,7 +336,7 @@ public class PlayerScript : MonoBehaviour
             case 3:
                 if (computer == false)
                 {
-                   diceButton.move_Buttonflag = 0;
+                    diceButton.move_Buttonflag = 0;
                     turn_end = false;
                     transform.position=new Vector3(next_x, 0.68f, next_z);//oncollisonenterを発生させるため
                     
