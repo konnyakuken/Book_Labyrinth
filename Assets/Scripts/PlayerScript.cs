@@ -26,11 +26,11 @@ public class PlayerScript : MonoBehaviour
 
     public bool book_flag = false;//本を持っているかの処理
 
-    bool branch_flag = false;
-    bool branch_Left = false;//分岐時何処があるのかを把握
-    bool branch_Right = false;
-    bool branch_Up = false;
-    bool branch_Down = false;
+    public bool branch_flag = false;
+    public bool branch_Left = false;//分岐時何処があるのかを把握
+    public bool branch_Right = false;
+    public bool branch_Up = false;
+    public bool branch_Down = false;
 
 
     public bool start_branch = true;//開始時の分岐用
@@ -44,9 +44,9 @@ public class PlayerScript : MonoBehaviour
 
     float now_x = 0;//ワープ,Move用の値
     float now_z = 0;
-    float next_x = 0;
-    float next_z = 0;
-    bool move_one = false;
+    public float next_x = 0;
+    public float next_z = 0;
+    public bool move_one = false;//1マス移動するかどうかの判定
 
     //NPC関係の変数宣言
     int selectmass = 0;
@@ -70,6 +70,9 @@ public class PlayerScript : MonoBehaviour
             {
                 if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
                 {
+                    if (start_branch == true)
+                        branch_flag = true;
+                    
                     branch_on = false;
                     move_mass = diceButton.select_num;//diceのダイスの出目
                     Debug.Log("出たマス数：" + move_mass);
@@ -107,7 +110,7 @@ public class PlayerScript : MonoBehaviour
                 Mass_status();
                 //Debug.Log(mass_name);
             }
-
+            /*
             if (branch_flag == true)//とりあえず十字キーで移動
             {
                 if (branch_Left == true && Input.GetKeyDown(KeyCode.LeftArrow))
@@ -136,6 +139,7 @@ public class PlayerScript : MonoBehaviour
 
                 }
             }
+            */
         }
 
     }
@@ -238,15 +242,15 @@ public class PlayerScript : MonoBehaviour
                     if (computer == false)
                     {
                         Debug.Log("何処へ行きますか？,十字キーで移動");
-                        move_one = false;
-                        branch_flag = true;
-                        /* move_one = false;
-                         if (start_branch == true)
+                        //move_one = false;
+                        //branch_flag = true;
+                         move_one = false;
+                         /*if (start_branch == true)
                          {
                              branch_flag = true;
                          }
-                         else
-                             branch_on = true;*/
+                         else*/
+                             branch_on = true;
                     }
 
                     else if (computer == true)
@@ -298,8 +302,10 @@ public class PlayerScript : MonoBehaviour
             {
                 move_one = true;
             }
+            
 
-        if (branch_on == true && computer == false)
+
+            if (branch_on == true && computer == false)
             {
                 branch_flag = true;
                 branch_on = false;
@@ -308,8 +314,13 @@ public class PlayerScript : MonoBehaviour
             {
                 NPC_Branch();
                 branch_on = false;
-            }else
+            }
+            else
+            {
                 branch_on = false;
+                branch_flag = false;
+            }
+                
         });
     }
 

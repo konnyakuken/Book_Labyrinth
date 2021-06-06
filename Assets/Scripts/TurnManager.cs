@@ -31,6 +31,9 @@ public class TurnManager : MonoBehaviour
     public Text turn_countText;
     GameObject playerManager;
 
+
+    Vector3 sleep_pos;
+
     public int[] page=new int[4] {50,50,50,50};
     public Text[] pageText;
     //public bool[] create_book=new bool[4] { false,false,false,false};
@@ -118,7 +121,9 @@ public class TurnManager : MonoBehaviour
     {
 
         cam[currentPlayer % 4].SetActive(false);
-        sleep_player[currentPlayer % 4].transform.position= player[currentPlayer % 4].transform.position;
+        sleep_pos = player[currentPlayer % 4].transform.position;
+        sleep_pos.y +=0.6f;
+        sleep_player[currentPlayer % 4].transform.position = sleep_pos;
         sleep_player[currentPlayer % 4].SetActive(true);//待機中のオブジェクトをonに
         currentPlayer += 1;
         //Debug.Log(currentPlayer % 4);
