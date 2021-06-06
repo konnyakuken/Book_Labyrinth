@@ -102,7 +102,8 @@ public class DiceButton : MonoBehaviour
         }
 
         //0=up,1=down,2=right,3=left
-        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag == true){
+        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag == true)
+        {
             if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_Left == true)
                 branch_Button[3].SetActive(true);
 

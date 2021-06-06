@@ -221,16 +221,11 @@ public class PlayerScript : MonoBehaviour
                 {
                     if (computer == false)
                     {
-                        Debug.Log("何処へ行きますか？,十字キーで移動");
-                        //move_one = false;
-                        //branch_flag = true;
+                        Debug.Log("何処へ行きますか？");
+                        
                          move_one = false;
-                         /*if (start_branch == true)
-                         {
-                             branch_flag = true;
-                         }
-                         else*/
-                             branch_on = true;
+                        
+                         branch_on = true;
                     }
 
                     else if (computer == true)
@@ -244,8 +239,7 @@ public class PlayerScript : MonoBehaviour
                         {
                             //Invoke("NPC_Branch", 0.5f);
                             branch_on = true;
-                        }
-                            
+                        }    
                         //NPC_Branch();
                         //Invoke("NPC_Branch", 0.5f);
                         //Debug.Log("分岐！");
@@ -254,7 +248,32 @@ public class PlayerScript : MonoBehaviour
 
                 }
             }
-            
+
+            if (move_mass == 1 && mass_name == 3&& count > 1)//止まるマスがMoveかつ分岐があるとき  分岐ボタンが早く出るため対策
+            {
+                if (computer == false)
+                {
+                    Debug.Log("何処へ行きますか？");
+
+                    move_one = false;
+
+                    branch_on = true;
+                }
+
+                else if (computer == true)
+                {
+                    move_one = false;
+                    if (start_branch == true)
+                    {
+                        NPC_Branch();
+                    }
+                    else
+                    {
+                        //Invoke("NPC_Branch", 0.5f);
+                        branch_on = true;
+                    }
+                }
+            }
         }
 
 
@@ -298,7 +317,7 @@ public class PlayerScript : MonoBehaviour
             else
             {
                 branch_on = false;
-                branch_flag = false;
+                
             }
                 
         });
@@ -313,7 +332,6 @@ public class PlayerScript : MonoBehaviour
                 SwitchPlayer();
                 break;
             case 1:
-
                 if (computer == false)
                     diceButton.Dice_Buttonflag = 1;
                 else
