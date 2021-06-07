@@ -55,6 +55,9 @@ public class PlayerScript : MonoBehaviour
     public bool select_com = false;//初回の一回判定
 
     public bool re_moveNPC = false;//moveを踏んだ後移動マスが-1になる為苦肉の策
+
+
+    public bool rest_flag = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,7 +67,14 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if( rest_flag == true)//博打の効果
+        {
+            rest_flag = false;
+            start_count = 0;
+            SwitchPlayer();
+        }
+
+
         if (my_turn == true)
         {
             if (computer == false)
@@ -405,6 +415,7 @@ public class PlayerScript : MonoBehaviour
         turnManager.turn_switch();
 
         diceButton.move_Buttonflag = 0;//ボタンを非表示に
+        diceButton.skil_end = false;//スキルを使用可能に
 
     }
 

@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 public class DiceButton : MonoBehaviour
 {
     public TurnManager turnManager;
+    public SkillScript skillscript;
+
 
     public GameObject[] player;
     [SerializeField]
@@ -23,6 +25,19 @@ public class DiceButton : MonoBehaviour
 
     [SerializeField]
     public GameObject[] branch_Button;//0=up,1=down,2=right,3=left
+
+    [SerializeField]
+    public GameObject skil_Bottun;
+
+    [SerializeField]
+    public GameObject skil_board;
+
+    [SerializeField]
+    public GameObject Exit_button;
+
+
+    [SerializeField]
+    public GameObject canvas_UI;//画面が見にくい為
 
     public int stop_button_flag=0;
 
@@ -41,16 +56,23 @@ public class DiceButton : MonoBehaviour
 
 
     public bool re_Move = false;
+    public bool skil_flag = false;
+    public bool skil_end = false;//1ターンに一度スキル使用可能
 
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        canvas_UI.SetActive(true);
+        skil_board.SetActive(false);
+
         move_Button.SetActive(false);
         select_Button[0].SetActive(false);
         select_Button[1].SetActive(false);
         Dice_Button.SetActive(false);
         stop_Button.SetActive(false);
+        skil_Bottun.SetActive(false);
 
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
@@ -60,19 +82,30 @@ public class DiceButton : MonoBehaviour
     void Update()
     {
         //ボタンの表示切り替え
-        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 0)
+        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 0 && skil_flag == false && skil_end == false)//スキルが発動したかどうかで切り替わり
         {
             move_Button.SetActive(true);
-        }else if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 1)
+            skil_Bottun.SetActive(true);
+        } else if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 0 && skil_flag == false && skil_end == true)
         {
+            move_Button.SetActive(true);
+        } else if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 0 && skil_flag == true)
+        {
+            move_Button.SetActive(false);
+            skil_Bottun.SetActive(false);
+        }
+        else if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 1)
+        {
+            skil_Bottun.SetActive(false);
             move_Button.SetActive(false);
             select_Button[0].SetActive(true);
             select_Button[1].SetActive(true);
-        }else if(move_Buttonflag == 2)
+        } else if (move_Buttonflag == 2)
         {
             move_Button.SetActive(false);
             select_Button[0].SetActive(false);
             select_Button[1].SetActive(false);
+            skil_Bottun.SetActive(false);
         }
 
         if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && Dice_Buttonflag == 1)//プラマイマス効果表示
@@ -243,6 +276,29 @@ public class DiceButton : MonoBehaviour
     }
 
     
+    public void Skil_open()
+    {
+        skil_board.SetActive(true);
+        skil_flag = true;
+    }
+
+    public void Skil_close()
+    {
+        skillscript.skil_page = 1;
+        
+        skil_flag = false;
+        skil_board.SetActive(false);
+
+        
+
+        skillscript.StopCoroutine(skillscript._someCoroutine);
+
+
+        skillscript.warning.SetActive(false);
+        skillscript.skil_on.interactable = true;
+        skillscript.next.interactable = true;
+        skillscript.back.interactable = true;
+    }
 
 
 
