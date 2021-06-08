@@ -151,6 +151,7 @@ public class DiceButton : MonoBehaviour
 
         }
 
+
             
 
 
@@ -197,7 +198,13 @@ public class DiceButton : MonoBehaviour
             winner = turnManager.currentPlayer % 4 + 1;
             SceneManager.LoadScene("result");//シーン切り替え
         }
+        stop_button_flag = 0;
+        stop_Button.SetActive(false);
+        for (int i = 0; i < 4; i++)
+            branch_Button[i].SetActive(false);
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass = 0;
+        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().end_processing();
+        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_count = 0;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
         stop_button_flag = 0;
     }
@@ -207,17 +214,33 @@ public class DiceButton : MonoBehaviour
         
         Move_result1 = Random.Range(1, 7);// 今回は１〜６の目が出るダイス
         Move_result2 = Random.Range(1, 7);// 今回は１〜６の目が出るダイス
+        if(skillscript.future_sight_flag == true)
+        {
+            Move_result1= skillscript.select_dice_num;
+            Move_result2 = skillscript.select_dice_num;
+            skillscript.select_dice_num = 1;
+            skillscript.future_sight_flag = false;
+        }
 
-        move_text1.text = Move_result1.ToString();
-        move_text2.text = Move_result2.ToString();
-        move_Buttonflag = 1;
+        if(skillscript.overflow == true)
+        {
+            move_text1.text = Move_result1.ToString()+"+2";
+            move_text2.text = Move_result2.ToString()+"+2";
+            Move_result1 += 2;
+            Move_result2 += 2;
+        }
+        else
+        {
+            move_text1.text = Move_result1.ToString();
+            move_text2.text = Move_result2.ToString();
+        }
+           move_Buttonflag = 1;
     }
     public void Move1 (){
         select_num = Move_result1;
         move_text1.text = "select";
         move_text2.text = "select";
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
-        //player[0].GetComponent<PlayerScript>().dice_select = true;
         
     }
 
@@ -227,14 +250,12 @@ public class DiceButton : MonoBehaviour
         move_text2.text = "select";
         move_text1.text = "select";
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
-        //player[0].GetComponent<PlayerScript>().dice_select = true;
         
     }
 
     public void Stop_start()
     {
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().dice_select = true;
-        //player[0].GetComponent<PlayerScript>().dice_select = true;
     }
 
 
@@ -244,6 +265,7 @@ public class DiceButton : MonoBehaviour
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().next_z += 2.1f;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
+        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
     }
@@ -253,6 +275,7 @@ public class DiceButton : MonoBehaviour
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().next_z -= 2.1f;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
+        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
     }
@@ -262,6 +285,7 @@ public class DiceButton : MonoBehaviour
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().next_x += 2.1f;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
+        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
     }
@@ -271,6 +295,7 @@ public class DiceButton : MonoBehaviour
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().next_x -= 2.1f;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
+        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
     }

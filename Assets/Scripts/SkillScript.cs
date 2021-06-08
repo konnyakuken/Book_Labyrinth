@@ -14,9 +14,12 @@ public class SkillScript : MonoBehaviour
     public Button skil_on;
 
     public TurnManager turnManager;
-   
+    [SerializeField]
+    public GameObject select_dice_number;//好きな出目を選択
+    public int select_dice_num = 1;
+    public Text select_number;
+    public bool future_sight_flag = false;
 
-    
     public Text Commentary;//説明
     public Text skil_name;
     [SerializeField]
@@ -46,6 +49,7 @@ public class SkillScript : MonoBehaviour
     public int dice_result=0;
     public int random_player = 0;
 
+    public bool overflow = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,11 +60,14 @@ public class SkillScript : MonoBehaviour
         back.interactable = true;
         player_iconselect.SetActive(false);
         skil_Dice.SetActive(false);
+        select_dice_number.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        select_number.text = select_dice_num.ToString();
+
         if (skil_page == 0)
         {
             skil_page = 5;
@@ -170,11 +177,50 @@ public class SkillScript : MonoBehaviour
                 }
                 break;
             case 4:
-                skil_name.text = "未来予知　残り回数:" + now_skilcount;
-                Commentary.text = "1～6のダイス目を指定できる" + "\r\n ノルマ:50　コスト:8";
+                if (turnManager.page[turnManager.currentPlayer % 4] >= 50 && now_skilcount > 0)
+                {
+                    skil_count[turnManager.currentPlayer % 4, skil_page - 1] -= 1;
+                    now_skilcount -= 1;
+
+                    turnManager.page[turnManager.currentPlayer % 4] -= 8;
+                    skil_text_all.SetActive(false);
+                    select_dice_number.SetActive(true);
+                }
+                else if (now_skilcount == 0)
+                {
+                    lack = 2;
+                    StartCoroutine("Noruma_lack");
+                }
+                else
+                {
+                    lack = 1;
+                    StartCoroutine("Noruma_lack");
+                }
                 break;
             case 5:
-                skil_name.text = "限界突破　残り回数:" + now_skilcount;
+                if (turnManager.page[turnManager.currentPlayer % 4] >= 30 && now_skilcount > 0)
+                {
+                    skil_count[turnManager.currentPlayer % 4, skil_page - 1] -= 1;
+                    now_skilcount -= 1;
+                    turnManager.page[turnManager.currentPlayer % 4] -= 5;
+                    overflow = true;
+                    skil_text_all.SetActive(false);
+
+                    GetComponent<DiceButton>().skil_end = true;//終了処理
+                    skil_text_all.SetActive(true);
+                    GetComponent<DiceButton>().Skil_close();
+
+                }
+                else if (now_skilcount == 0)
+                {
+                    lack = 2;
+                    StartCoroutine("Noruma_lack");
+                }
+                else
+                {
+                    lack = 1;
+                    StartCoroutine("Noruma_lack");
+                }
                 Commentary.text = "出た目+２移動できるようになる" + "\r\n ノルマ:30　コスト:5";
                 break;
         }
@@ -261,11 +307,35 @@ public class SkillScript : MonoBehaviour
     public void Gamble()
     {
         random_player = Random.Range(0, 4);
+        //random_player = 0;
         turnManager.player[random_player].GetComponent<PlayerScript>().rest_flag = true;
-        Debug.Log("P" + random_player);
+        Debug.Log("P" + (random_player+1)+"の休み");
 
         GetComponent<DiceButton>().skil_end = true;//終了処理
         skil_text_all.SetActive(true);
         GetComponent<DiceButton>().Skil_close();
+    }
+
+    public void Decision_number()
+    {
+        future_sight_flag = true;
+        select_dice_number.SetActive(false);
+
+        GetComponent<DiceButton>().skil_end = true;//終了処理
+        skil_text_all.SetActive(true);
+        GetComponent<DiceButton>().Skil_close();
+    }
+    public void Next_number()
+    {
+        select_dice_num += 1;
+        if (select_dice_num == 7)
+            select_dice_num = 1;
+    }
+
+    public void Back_number()
+    {
+        select_dice_num -= 1;
+        if (select_dice_num == 0)
+            select_dice_num = 6;
     }
 }

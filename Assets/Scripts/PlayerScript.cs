@@ -58,25 +58,43 @@ public class PlayerScript : MonoBehaviour
 
 
     public bool rest_flag = false;
+
+    public float differ_x = 0;
+    public float differ_z = 0;//２回オンコリジョンを踏み二回判定されてるのでその分削除
     // Start is called before the first frame update
     void Start()
     {
-        turn_end = false;
+        
+        start_branch = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if( rest_flag == true)//博打の効果
+
+        if (rest_flag == true&&computer==false)//博打の効果
         {
             rest_flag = false;
             start_count = 0;
+            move_mass = 8;
+            
+            next_x += differ_x;
+            next_z += differ_z;
+            
+            diceButton.move_Button.SetActive(false); ;
+            branch_flag = false;
+            for (int i = 0; i < 4; i++)
+                diceButton.branch_Button[i].SetActive(false);
+
             SwitchPlayer();
         }
 
-
         if (my_turn == true)
         {
+            
+
+            
+
             if (computer == false)
             {
                 if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
@@ -96,11 +114,31 @@ public class PlayerScript : MonoBehaviour
             }
             else if (computer == true && select_com == true)
             {
-                NPC_move();
-                turn_end = true;
-                move = true;
-                select_com = false;
-                move_one = true;
+                if (rest_flag == true)//博打の効果
+                {
+                    rest_flag = false;
+                    start_count = 0;
+                    move_mass = 8;
+                    //transform.position = new Vector3(next_x, 0.6f, next_z);
+
+                    next_x += differ_x;
+                    next_z += differ_z;
+
+                    diceButton.move_Button.SetActive(false); ;
+                    branch_flag = false;
+                    for (int i = 0; i < 4; i++)
+                        diceButton.branch_Button[i].SetActive(false);
+
+                    SwitchPlayer();
+                }
+                else
+                {
+                    NPC_move();
+                    turn_end = true;
+                    move = true;
+                    select_com = false;
+                    move_one = true;
+                }             
             }
 
             if (move == true)//移動処理                
@@ -124,7 +162,7 @@ public class PlayerScript : MonoBehaviour
                     Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg = true;
                 }
                 Mass_status();
-                //Debug.Log(mass_name);
+                Debug.Log(mass_name);
             }
             
         }
@@ -166,7 +204,7 @@ public class PlayerScript : MonoBehaviour
     {
         //Debug.Log(move_mass);
 
-
+        //Debug.Log("on!");
         branch_Left = false;//初期化
         branch_Right = false;
         branch_Up = false;
@@ -215,7 +253,10 @@ public class PlayerScript : MonoBehaviour
                 //Debug.Log("Plus!!");
                 if (count == 1)
                 {//次の座標へプラス
-                   
+
+                    differ_x = next_x;
+                    differ_z = next_z;
+
                     if (col.gameObject.GetComponent<MassManager>().isLeft == true)
                         next_x -= 2.1f;
                     else if (col.gameObject.GetComponent<MassManager>().isRight == true)
@@ -225,7 +266,8 @@ public class PlayerScript : MonoBehaviour
                     else if (col.gameObject.GetComponent<MassManager>().isDown == true)
                         next_z -= 2.1f;
 
-
+                    differ_x -= next_x;
+                    differ_z -= next_z;
                 }
                 else
                 {
@@ -279,7 +321,6 @@ public class PlayerScript : MonoBehaviour
                     }
                     else
                     {
-                        //Invoke("NPC_Branch", 0.5f);
                         branch_on = true;
                     }
                 }
@@ -299,13 +340,14 @@ public class PlayerScript : MonoBehaviour
         this.transform.DOMove(new Vector3(next_x, 0.6f, next_z), 0.5f).OnComplete(() =>//移動終了後実行
         {
             move_mass -= 1;
-            start_branch = false;
+            
             //Debug.Log(transform.position);
             //Debug.Log("x座標"+next_x+",z座標"+ next_z);
             //Debug.Log(move_mass);
             if (move_mass == 0)
             {
                 move = false;
+                
             }
             else
             {
@@ -407,15 +449,29 @@ public class PlayerScript : MonoBehaviour
     {
         re_moveNPC = false;
         turn_end = false;
-        turnManager.turn_switching = true;
+        
         my_turn = false;
         select_com = true;
-        this.gameObject.SetActive(false);
-        
-        turnManager.turn_switch();
 
+        start_branch = false;
+        this.gameObject.SetActive(false);
         diceButton.move_Buttonflag = 0;//ボタンを非表示に
         diceButton.skil_end = false;//スキルを使用可能に
+        if (mass_name == 6)//停止マスがスタートだった時
+            start_branch = true;
+        Debug.Log("move_mass:"+ move_mass);
+        Debug.Log("my_turn:" + my_turn);
+        Debug.Log("dice_select:" + dice_select);
+        Debug.Log("move:" + move);
+        Debug.Log("turn_end:" + turn_end);
+        Debug.Log("re_moveNPC:" + re_moveNPC);
+        Debug.Log("start_branch:" + start_branch);
+        
+
+
+        turnManager.turn_switch();
+
+        
 
     }
 
@@ -447,38 +503,67 @@ public class PlayerScript : MonoBehaviour
 
     public void NPC_Branch()
     {
-
-        selectmass = Random.Range(0, 4);
-        bool branch_com = false;
-        while (branch_com == false)//分岐内の判定チェック
+        if (rest_flag == true)//博打の効果
         {
-            if (branch_Left == true && selectmass == 0)
+            rest_flag = false;
+            start_count = 0;
+            move_mass = 8;
+            //transform.position = new Vector3(next_x, 0.6f, next_z);
+
+            next_x += differ_x;
+            next_z += differ_z;
+
+            diceButton.move_Button.SetActive(false); ;
+            branch_flag = false;
+            for (int i = 0; i < 4; i++)
+                diceButton.branch_Button[i].SetActive(false);
+
+            SwitchPlayer();
+        }
+        else
+        {
+            selectmass = Random.Range(0, 4);
+            bool branch_com = false;
+            while (branch_com == false)//分岐内の判定チェック
             {
-                branch_com = true;
-                next_x -= 2.1f;
-                move_one = true;
+                if (branch_Left == true && selectmass == 0)
+                {
+                    branch_com = true;
+                    next_x -= 2.1f;
+                    move_one = true;
+                }
+                else if (branch_Right == true && selectmass == 1)
+                {
+                    next_x += 2.1f;
+                    move_one = true;
+                    branch_com = true;
+                }
+                else if (branch_Up == true && selectmass == 2)
+                {
+                    next_z += 2.1f;
+                    move_one = true;
+                    branch_com = true;
+
+                }
+                else if (branch_Down == true && selectmass == 3)
+                {
+                    next_z -= 2.1f;
+                    move_one = true;
+                    branch_com = true;
+                }
+                else
+                    selectmass = (selectmass + 1) % 4;
+
             }
-            else if (branch_Right == true && selectmass == 1)
-            {
-                next_x += 2.1f;
-                move_one = true;
-                branch_com = true;
-            }else if (branch_Up == true&& selectmass == 2)
-            {
-                next_z += 2.1f;
-                move_one = true;
-                branch_com = true;
-
-            }else if(branch_Down == true&& selectmass == 3)
-            {
-                next_z -= 2.1f;
-                move_one = true;
-                branch_com = true;
-            }else
-            selectmass =  (selectmass+1)%4;
-
         }
     }
 
+    public void end_processing()
+    {
+        move_mass = 8;
+
+        next_x += differ_x;
+        next_z += differ_z;
+    }
 
 }

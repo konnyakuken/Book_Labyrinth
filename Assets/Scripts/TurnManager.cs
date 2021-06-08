@@ -11,7 +11,7 @@ public class TurnManager : MonoBehaviour
     public int count = 1;
                         // 現在のプレイヤー番号
     public int currentPlayer = 0;
-    public bool turn_switching = false;//ターン切り替え処理中かどうか
+    
 
     [SerializeField]
     public GameObject[] player;
@@ -102,7 +102,7 @@ public class TurnManager : MonoBehaviour
 
         if (page[currentPlayer % 4] >= 100  && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false&& GetComponent<DiceButton>().skil_flag == false)//100を超えたら本を作成するボタンをonにする
         {
-            Debug.Log(page[currentPlayer % 4]);
+            //Debug.Log(page[currentPlayer % 4]);
             if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)
                 create_book.SetActive(true);
             //else
@@ -127,6 +127,7 @@ public class TurnManager : MonoBehaviour
         sleep_player[currentPlayer % 4].SetActive(true);//待機中のオブジェクトをonに
         currentPlayer += 1;
         //Debug.Log(currentPlayer % 4);
+
         turn = (currentPlayer / 4) + 1;//ターン数の確認
         turn_countText.text = "ターン数:" + turn;
 
@@ -153,6 +154,7 @@ public class TurnManager : MonoBehaviour
     public void delay_player()
     {
         player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn = true;
-        player[currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
+        if(player[currentPlayer % 4].GetComponent<PlayerScript>().computer==true)
+            player[currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
     }
 }
