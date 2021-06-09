@@ -118,7 +118,7 @@ public class TurnManager : MonoBehaviour
         if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false&& GetComponent<DiceButton>().skil_flag == false&&diceButton.move_Buttonflag == 0)//100を超えたら本を作成するボタンをonにする
         {
             //Debug.Log(page[currentPlayer % 4]);
-            if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)
+            if (page[currentPlayer % 4] >= 100)
                 create_book.SetActive(true);
             //else
 

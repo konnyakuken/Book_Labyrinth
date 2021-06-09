@@ -61,6 +61,9 @@ public class PlayerScript : MonoBehaviour
 
     public float differ_x = 0;
     public float differ_z = 0;//２回オンコリジョンを踏み二回判定されてるのでその分削除
+
+    public int anime_flagNum = 0;//animationのフラグを管理
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -110,6 +113,7 @@ public class PlayerScript : MonoBehaviour
                     turn_end = true;
                     diceButton.move_Buttonflag = 2;//ボタンを非表示に
                     move_one = true;
+                    anime_flagNum = 1;
                 }
             }
             else if (computer == true && select_com == true)
@@ -156,6 +160,7 @@ public class PlayerScript : MonoBehaviour
 
             if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true)//ターン終了処理
             {
+                anime_flagNum = 0;
                 if (Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg==false)
                 {
                     Hidden_massflag.GetComponent<MeshRenderer>().enabled=false;//MeshRendererをoffにする
@@ -341,9 +346,6 @@ public class PlayerScript : MonoBehaviour
         {
             move_mass -= 1;
             
-            //Debug.Log(transform.position);
-            //Debug.Log("x座標"+next_x+",z座標"+ next_z);
-            //Debug.Log(move_mass);
             if (move_mass == 0)
             {
                 move = false;
@@ -482,6 +484,7 @@ public class PlayerScript : MonoBehaviour
                 move_mass = diceButton.Move_result2;                    
             }
         Debug.Log("出たマス数:" + move_mass);
+        anime_flagNum = 1;
         if (re_moveNPC == true)
         {
             move_mass += 1;

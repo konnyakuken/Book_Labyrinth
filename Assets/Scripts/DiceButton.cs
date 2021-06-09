@@ -24,7 +24,7 @@ public class DiceButton : MonoBehaviour
     public GameObject stop_Button;
 
     [SerializeField]
-    public GameObject[] branch_Button;//0=up,1=down,2=right,3=left
+    public GameObject[] branch_Button;//0=down、1=up、2=left、3=right
 
     [SerializeField]
     public GameObject skil_Bottun;
@@ -38,6 +38,8 @@ public class DiceButton : MonoBehaviour
 
     [SerializeField]
     public GameObject canvas_UI;//画面が見にくい為
+
+    public int player_rotation = 0;//1=down、2=up、3=left、4=right
 
     public int stop_button_flag=0;
 
@@ -137,7 +139,7 @@ public class DiceButton : MonoBehaviour
         }
 
         //0=up,1=down,2=right,3=left
-        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag == true)
+        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag == true&& player_rotation == 0)
         {
             if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_Left == true)
                 branch_Button[3].SetActive(true);
@@ -208,7 +210,6 @@ public class DiceButton : MonoBehaviour
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass = 0;
-        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().end_processing();
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_count = 0;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
         stop_button_flag = 0;
@@ -233,6 +234,7 @@ public class DiceButton : MonoBehaviour
             move_text2.text = Move_result2.ToString()+"+2";
             Move_result1 += 2;
             Move_result2 += 2;
+            skillscript.overflow = false;
         }
         else
         {
@@ -268,41 +270,33 @@ public class DiceButton : MonoBehaviour
     {
         
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().next_z += 2.1f;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
+        player_rotation = 2;//1=down、2=up、3=left、4=right
     }
 
     public void Branch_down()
     {
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().next_z -= 2.1f;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
+        player_rotation = 1;//1=down、2=up、3=left、4=right
     }
 
     public void Branch_right()
     {
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().next_x += 2.1f;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
+        player_rotation = 4;//1=down、2=up、3=left、4=right
     }
 
     public void Branch_left()
     {
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().next_x -= 2.1f;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
+        player_rotation = 3;//1=down、2=up、3=left、4=right
     }
 
     

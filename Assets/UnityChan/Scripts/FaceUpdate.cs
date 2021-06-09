@@ -18,7 +18,8 @@ namespace UnityChan
 
 		void OnGUI ()
 		{
-            if (isGUI)
+			isKeepFace = false;
+			if (isGUI)
             {
                 GUILayout.Box("Face Update", GUILayout.Width(170), GUILayout.Height(25 * (animations.Length + 2)));
                 Rect screenRect = new Rect(10, 25, 150, 25 * (animations.Length + 1));
@@ -69,7 +70,7 @@ namespace UnityChan
 
 		void ChangeFace (string str)
 		{
-			isKeepFace = true;
+			//isKeepFace = true;
 			current = 1;
 			anim.CrossFade (str, 0);
 		}
