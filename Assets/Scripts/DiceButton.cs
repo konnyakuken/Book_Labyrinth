@@ -59,7 +59,8 @@ public class DiceButton : MonoBehaviour
     public bool skil_flag = false;
     public bool skil_end = false;//1ターンに一度スキル使用可能
 
-    
+    public GameObject Dice_number;
+    public Text Dice_numberText;
 
     // Start is called before the first frame update
     void Start()
@@ -73,7 +74,7 @@ public class DiceButton : MonoBehaviour
         Dice_Button.SetActive(false);
         stop_Button.SetActive(false);
         skil_Bottun.SetActive(false);
-
+        Dice_number.SetActive(false);
         for (int i = 0; i < 4; i++)
             branch_Button[i].SetActive(false);
     }
@@ -81,6 +82,7 @@ public class DiceButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //ボタンの表示切り替え
         if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && move_Buttonflag == 0 && skil_flag == false && skil_end == false)//スキルが発動したかどうかで切り替わり
         {
@@ -151,9 +153,12 @@ public class DiceButton : MonoBehaviour
 
         }
 
-
-            
-
+        Dice_numberText.text = (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass).ToString();//Diceカウント表示
+        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move == true)
+            Dice_number.SetActive(true);
+        else
+            Dice_number.SetActive(false);
+        
 
 
     }

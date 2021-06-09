@@ -459,16 +459,6 @@ public class PlayerScript : MonoBehaviour
         diceButton.skil_end = false;//スキルを使用可能に
         if (mass_name == 6)//停止マスがスタートだった時
             start_branch = true;
-        Debug.Log("move_mass:"+ move_mass);
-        Debug.Log("my_turn:" + my_turn);
-        Debug.Log("dice_select:" + dice_select);
-        Debug.Log("move:" + move);
-        Debug.Log("turn_end:" + turn_end);
-        Debug.Log("re_moveNPC:" + re_moveNPC);
-        Debug.Log("start_branch:" + start_branch);
-        
-
-
         turnManager.turn_switch();
 
         

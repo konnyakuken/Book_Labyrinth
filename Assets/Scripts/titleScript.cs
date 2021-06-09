@@ -30,4 +30,15 @@ public class titleScript : MonoBehaviour
         player_num = 2;
         SceneManager.LoadScene("Main");//シーン切り替え
     }
+    public void Three_person()
+    {
+        player_num = 3;
+        SceneManager.LoadScene("Main");//シーン切り替え
+    }
+    public void Four_person()
+    {
+        player_num = 4;
+        SceneManager.LoadScene("Main");//シーン切り替え
+    }
+
 }

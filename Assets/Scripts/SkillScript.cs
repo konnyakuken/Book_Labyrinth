@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class SkillScript : MonoBehaviour
 {
+    public GameObject Skil_managerCanvas;
+
     public Coroutine _someCoroutine;
     public int lack = 0;//不足時のテキスト分岐
 
@@ -61,6 +63,7 @@ public class SkillScript : MonoBehaviour
         player_iconselect.SetActive(false);
         skil_Dice.SetActive(false);
         select_dice_number.SetActive(false);
+        Skil_managerCanvas.SetActive(true);
     }
 
     // Update is called once per frame

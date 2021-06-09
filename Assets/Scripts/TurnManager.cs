@@ -6,12 +6,15 @@ using Random = UnityEngine.Random;
 
 public class TurnManager : MonoBehaviour
 {
+    public DiceButton diceButton;
+
     public int turn = 0;//ターン管理　スタート停止も判定
     public int last_turn = 0;
     public int count = 1;
                         // 現在のプレイヤー番号
     public int currentPlayer = 0;
-    
+
+    public Text player_trunText;
 
     [SerializeField]
     public GameObject[] player;
@@ -45,22 +48,34 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         for (int i = 1; i <= 3; i++)//1p以外は一回comに
-            player[1].GetComponent<PlayerScript>().computer = true;
+            player[i].GetComponent<PlayerScript>().computer = true;
 
         if (titleScript.player_num == 1)//soroプレイ
         {
             player[0].GetComponent<PlayerScript>().computer = false;
             titleScript.player_num = 0;
         }
-        else if(titleScript.player_num == 2)//2人プレイ
+        else if (titleScript.player_num == 2)//2人プレイ
         {
             player[0].GetComponent<PlayerScript>().computer = false;
             int p2 = Random.Range(1, 4);
             player[p2].GetComponent<PlayerScript>().computer = false;
             titleScript.player_num = 0;
         }
-
-        player[1].SetActive(false);
+        else if (titleScript.player_num == 3)//3人プレイ
+        {
+            player[0].GetComponent<PlayerScript>().computer = false;//仮実装
+            int p2 = 1;
+            int p3 = 2;
+            player[p2].GetComponent<PlayerScript>().computer = false;
+            player[p3].GetComponent<PlayerScript>().computer = false;
+            titleScript.player_num = 0;
+        }else if (titleScript.player_num == 4)//4人プレイ
+        {
+            for (int i = 1; i <= 3; i++)//1p以外は一回comに
+                player[i].GetComponent<PlayerScript>().computer = false;
+        }
+            player[1].SetActive(false);
         player[2].SetActive(false);
         player[3].SetActive(false);
         turn = 1;
@@ -100,7 +115,7 @@ public class TurnManager : MonoBehaviour
             pageText[i].text = page[i].ToString();
 
 
-        if (page[currentPlayer % 4] >= 100  && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false&& GetComponent<DiceButton>().skil_flag == false)//100を超えたら本を作成するボタンをonにする
+        if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false&& GetComponent<DiceButton>().skil_flag == false&&diceButton.move_Buttonflag == 0)//100を超えたら本を作成するボタンをonにする
         {
             //Debug.Log(page[currentPlayer % 4]);
             if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false)
@@ -108,11 +123,12 @@ public class TurnManager : MonoBehaviour
             //else
 
         }
-        else if (page[currentPlayer % 4] >= 100 && player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn == true && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == true)
+        else if (page[currentPlayer % 4] >= 100 && player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn == true && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == true&& diceButton.move_Buttonflag == 0)
         {
             //100を超えたら本を作成するボタンをonにする)
             GetComponent<DiceButton>().create_bookButton();
-        }else
+        }
+        else
             create_book.SetActive(false);
 
     }
@@ -130,13 +146,12 @@ public class TurnManager : MonoBehaviour
 
         turn = (currentPlayer / 4) + 1;//ターン数の確認
         turn_countText.text = "ターン数:" + turn;
-
+        player_trunText.text =  (currentPlayer % 4 + 1) + "Pのターン";
         sleep_player[currentPlayer % 4].SetActive(false);
         player[currentPlayer % 4].SetActive(true);//プレイヤー表示の切り替え
         cam[currentPlayer % 4].SetActive(true);
         Invoke("delay_player", 2.0f);
         player[currentPlayer % 4].GetComponent<PlayerScript>().select_com = true;
-        Debug.Log("P" +( currentPlayer % 4+1)+"のターン");
 
         if (last_turn != turn)
         {
