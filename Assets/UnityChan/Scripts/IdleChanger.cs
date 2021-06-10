@@ -35,7 +35,7 @@ namespace UnityChan
 		public bool anime_switching = false;
 
 		
-									   
+
 		void Start ()
 		{
 			// 各参照の初期化
@@ -49,12 +49,6 @@ namespace UnityChan
 		// Update is called once per frame
 		void  Update ()
 		{
-			if(turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag == true)
-            {
-				anime_switching = true;
-				
-
-			}
 			if (turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().anime_flagNum == 1&& turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag == false) {
 				anim.SetInteger("Now",1);
                 // ブーリアンNextをtrueにする
@@ -68,55 +62,65 @@ namespace UnityChan
 			//1=down、2=up、3=left、4=right
 			if (diceButton.player_rotation == 1)
             {
-				transform.DORotate(new Vector3(0, 180, 0), 1, RotateMode.Fast); //最短で指定の角度まで回転
+				transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
 				diceButton.player_rotation = 5;//何度も実行されるのを防ぐ為
-				transform.DORotate(new Vector3(0, 180, 0), 1, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+				transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
 				{
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
 					diceButton.player_rotation = 0;
+					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().direction = 1;
 				});
 			}
 			else if (diceButton.player_rotation == 2)
 			{
-				transform.DORotate(new Vector3(0, 0, 0), 1, RotateMode.Fast); //最短で指定の角度まで回転
+				transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
 				diceButton.player_rotation = 5;//何度も実行されるのを防ぐ為
-				transform.DORotate(new Vector3(0, 0, 0), 1, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+				transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
 				{
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
 					diceButton.player_rotation = 0;
+					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().direction = 2;
 				});
 			}
 			else if (diceButton.player_rotation == 3)
 			{
-				transform.DORotate(new Vector3(0, 270, 0), 1, RotateMode.Fast); //最短で指定の角度まで回転
+				transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
 				diceButton.player_rotation = 5;
-				transform.DORotate(new Vector3(0, 270, 0), 1, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+				transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
 				{
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
 					diceButton.player_rotation = 0;
+					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().direction = 3;
 				});
 			}
 			else if (diceButton.player_rotation == 4)
 			{
-				transform.DORotate(new Vector3(0, 90, 0), 1, RotateMode.Fast); //最短で指定の角度まで回転
+				transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
 				diceButton.player_rotation = 5;
-				transform.DORotate(new Vector3(0, 90, 0), 1, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+				transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
 				{
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_one = true;
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
 					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_branch = false;
 					diceButton.player_rotation = 0;
+					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().direction = 4;
 				});
 			}
 
-			
-
+			if (turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().warp_flag == true)//ワープ時のアニメーション処理
+			{
+				transform.DORotate(new Vector3(0, 180, 0), 0, RotateMode.Fast);
+				transform.DORotate(new Vector3(0, 180, 0), 0, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+				{
+					turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().warp_flag = false;
+				});
+			}
 
 			/*.
 			// ↓キーが押されたら、ステートを前に戻す処理
@@ -124,7 +128,7 @@ namespace UnityChan
 				// ブーリアンBackをtrueにする
 				anim.SetBool ("Back", true);
 			}*/
-
+			/*
 			// "Next"フラグがtrueの時の処理
 			if (anim.GetBool ("Next")) {
 				// 現在のステートをチェックし、ステート名が違っていたらブーリアンをfalseに戻す
@@ -144,6 +148,7 @@ namespace UnityChan
 					previousState = currentState;
 				}
 			}
+			*/
 		}
 
 		void OnGUI ()

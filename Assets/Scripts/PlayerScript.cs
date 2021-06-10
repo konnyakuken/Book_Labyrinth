@@ -63,7 +63,14 @@ public class PlayerScript : MonoBehaviour
     public float differ_z = 0;//２回オンコリジョンを踏み二回判定されてるのでその分削除
 
     public int anime_flagNum = 0;//animationのフラグを管理
-    
+
+    public bool warp_flag = false;//ワープ関係のフラグ
+
+    //1=down、2=up、3=left、4=right
+    public int direction_anime = 0;//方向転換
+    public int direction = 1;//1=down、2=up、3=left、4=right
+    public GameObject anime_object;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -104,7 +111,9 @@ public class PlayerScript : MonoBehaviour
                 {
                     if (start_branch == true)
                         branch_flag = true;
-                    
+
+                    Rotation_Check();
+
                     branch_on = false;
                     move_mass = diceButton.select_num;//diceのダイスの出目
                     Debug.Log("出たマス数：" + move_mass);
@@ -137,7 +146,10 @@ public class PlayerScript : MonoBehaviour
                 }
                 else
                 {
+                    
+
                     NPC_move();
+                    Rotation_Check();
                     turn_end = true;
                     move = true;
                     select_com = false;
@@ -166,6 +178,20 @@ public class PlayerScript : MonoBehaviour
                     Hidden_massflag.GetComponent<MeshRenderer>().enabled=false;//MeshRendererをoffにする
                     Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg = true;
                 }
+                if(mass_name == 3&& computer == true)//CPのmoveじゃない時のみ
+                {
+
+                }
+                else
+                {
+                    direction = 1;
+                    anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                }
+                /*anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//この中に入れたいけど上手くいかないのでとりあえず放置
+                {
+                    
+                    
+                });*/
                 Mass_status();
                 Debug.Log(mass_name);
             }
@@ -249,7 +275,8 @@ public class PlayerScript : MonoBehaviour
         else
             diceButton.stop_button_flag = 0;
 
-
+        
+        
 
         if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Start")
         {
@@ -261,15 +288,28 @@ public class PlayerScript : MonoBehaviour
 
                     differ_x = next_x;
                     differ_z = next_z;
-
+                    //1=down、2=up、3=left、4=right
                     if (col.gameObject.GetComponent<MassManager>().isLeft == true)
+                    {
+                        direction_anime = 3;
                         next_x -= 2.1f;
+                    }  
                     else if (col.gameObject.GetComponent<MassManager>().isRight == true)
+                    {
                         next_x += 2.1f;
+                        direction_anime = 4;
+                    }
                     else if (col.gameObject.GetComponent<MassManager>().isUp == true)
+                    {
                         next_z += 2.1f;
+                        direction_anime = 2;
+                    }
                     else if (col.gameObject.GetComponent<MassManager>().isDown == true)
+                    {
                         next_z -= 2.1f;
+                        direction_anime = 1;
+                    }
+                        
 
                     differ_x -= next_x;
                     differ_z -= next_z;
@@ -297,8 +337,6 @@ public class PlayerScript : MonoBehaviour
                             //Invoke("NPC_Branch", 0.5f);
                             branch_on = true;
                         }    
-                        //NPC_Branch();
-                        //Invoke("NPC_Branch", 0.5f);
                         //Debug.Log("分岐！");
                     }
 
@@ -355,24 +393,51 @@ public class PlayerScript : MonoBehaviour
             {
                 move_one = true;
             }
-            
 
+            if (direction_anime != direction)//一致するのなら
+            {//1=down、2=up、3=left、4=right
+                switch (direction_anime)
+                {
+                    case 1:
+                        anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                        anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                        {
+                            direction = 1;
+                            Check();
+                        });
+                        break;
+                    case 2:
+                        anime_object.transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                        anime_object.transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                        {
+                            direction = 2;
+                            Check();
+                        });
+                        break;
+                    case 3:
+                        anime_object.transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                        anime_object.transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                        {
+                            direction = 3;
+                            Check();
+                        });
+                        break;
+                    case 4:
+                        anime_object.transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                        anime_object.transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                        {
+                            direction = 4;
+                            Check();
+                        });
+                        break;
+                }
 
-            if (branch_on == true && computer == false)
-            {
-                branch_flag = true;
-                branch_on = false;
-            }
-            else if(branch_on == true && computer == true)
-            {
-                NPC_Branch();
-                branch_on = false;
             }
             else
             {
-                branch_on = false;
-                
+                Check();
             }
+            
                 
         });
     }
@@ -428,10 +493,20 @@ public class PlayerScript : MonoBehaviour
                 warp_mass =Random.Range(0, 69);
                 warp_position =  map.mass[warp_mass].transform.position;
                 warp_position.y = 0.6f;
+                this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;//ｙ座標をロック
                 transform.position = warp_position;
                 next_x = warp_position.x;
                 next_z= warp_position.z;
-                SwitchPlayer();
+                warp_flag = true;
+                
+                DOVirtual.DelayedCall(0.7f, () => {
+                    this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                    next_x += differ_x;
+                    next_z += differ_z;
+                    SwitchPlayer();
+                });
+                
+                //Invoke("SwitchPlayer", 0.5f);
                 break;
             case 5:
                 Debug.Log("Random!");
@@ -524,18 +599,21 @@ public class PlayerScript : MonoBehaviour
                     branch_com = true;
                     next_x -= 2.1f;
                     move_one = true;
+                    direction = 3;//1=down、2=up、3=left、4=right
                 }
                 else if (branch_Right == true && selectmass == 1)
                 {
                     next_x += 2.1f;
                     move_one = true;
                     branch_com = true;
+                    direction = 4;//1=down、2=up、3=left、4=right
                 }
                 else if (branch_Up == true && selectmass == 2)
                 {
                     next_z += 2.1f;
                     move_one = true;
                     branch_com = true;
+                    direction = 2;//1=down、2=up、3=left、4=right
 
                 }
                 else if (branch_Down == true && selectmass == 3)
@@ -543,20 +621,112 @@ public class PlayerScript : MonoBehaviour
                     next_z -= 2.1f;
                     move_one = true;
                     branch_com = true;
+                    direction = 1;//1=down、2=up、3=left、4=right
                 }
                 else
                     selectmass = (selectmass + 1) % 4;
 
             }
+            
+            switch (direction)
+            {
+                case 1:
+                    anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                    anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                    {
+                        //move_one = true;
+                    });
+                    break;
+                case 2:
+                    anime_object.transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                    anime_object.transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                    {
+                       // move_one = true;
+                    });
+                    break;
+                case 3:
+                    anime_object.transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                    anime_object.transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                    {
+                        //move_one = true;
+                    });
+                    break;
+                case 4:
+                    anime_object.transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                    anime_object.transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                    {
+                        //move_one = true;
+                    });
+                    break;
+            }
         }
     }
 
-    public void end_processing()
+    public void End_processing()
     {
         move_mass = 8;
 
         next_x += differ_x;
         next_z += differ_z;
     }
+
+    public void Check()//移動後の分岐判定
+    {
+        if (branch_on == true && computer == false)
+        {
+            branch_flag = true;
+            branch_on = false;
+        }
+        else if (branch_on == true && computer == true)
+        {
+            NPC_Branch();
+            branch_on = false;
+        }
+        else
+        {
+            branch_on = false;
+
+        }
+    }
+
+    public void Rotation_Check()//分岐がない時
+    {
+        if (direction_anime != direction)//回転処理
+        {//1=down、2=up、3=left、4=right
+            switch (direction_anime)
+            {
+                case 1:
+                    anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                    anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                    {
+                        direction = 1;
+                    });
+                    break;
+                case 2:
+                    anime_object.transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                    anime_object.transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                    {
+                        direction = 2;
+                    });
+                    break;
+                case 3:
+                    anime_object.transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                    anime_object.transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                    {
+                        direction = 3;
+                    });
+                    break;
+                case 4:
+                    anime_object.transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                    anime_object.transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
+                    {
+                        direction = 4;
+                    });
+                    break;
+            }
+            
+        }
+    }
+
 
 }

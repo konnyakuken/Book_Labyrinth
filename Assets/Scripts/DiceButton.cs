@@ -126,10 +126,10 @@ public class DiceButton : MonoBehaviour
 
 
 
-        if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && stop_button_flag == 1)//stop確認
+        if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && stop_button_flag == 1 && player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass != 0)//stop確認
         {
             stop_Button.SetActive(true);
-        }else if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && stop_button_flag == 0)
+        }else //if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false && stop_button_flag == 0)
             stop_Button.SetActive(false);
 
 
@@ -316,8 +316,6 @@ public class DiceButton : MonoBehaviour
         
 
         skillscript.StopCoroutine(skillscript._someCoroutine);
-
-
         skillscript.warning.SetActive(false);
         skillscript.skil_on.interactable = true;
         skillscript.next.interactable = true;
