@@ -333,7 +333,4 @@ public class DiceButton : MonoBehaviour
         skillscript.next.interactable = true;
         skillscript.back.interactable = true;
     }
-
-
-
 }

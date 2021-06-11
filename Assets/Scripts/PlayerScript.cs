@@ -311,7 +311,7 @@ public class PlayerScript : MonoBehaviour
 
         if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Start")
         {
-            if (move_mass != 1)//最後に座標が+されないように
+            if (move_mass !=1)//最後に座標が+されないように
             {
                 //Debug.Log("Plus!!");
                 if (count == 1)
@@ -352,10 +352,8 @@ public class PlayerScript : MonoBehaviour
                         Debug.Log("何処へ行きますか？");
                         
                          move_one = false;
-                        
                          branch_on = true;
                     }
-
                     else if (computer == true)
                     {
                         move_one = false;
@@ -365,7 +363,6 @@ public class PlayerScript : MonoBehaviour
                         }
                         else
                         {
-                            //Invoke("NPC_Branch", 0.5f);
                             branch_on = true;
                         }    
                         //Debug.Log("分岐！");
@@ -404,7 +401,6 @@ public class PlayerScript : MonoBehaviour
 
                     branch_on = true;
                 }
-
                 else if (computer == true)
                 {
                     move_one = false;
@@ -616,6 +612,7 @@ public class PlayerScript : MonoBehaviour
             {
                 move_mass = diceButton.Move_result2;                    
             }
+       
         Debug.Log("出たマス数:" + move_mass);
         anime_flagNum = 1;
         if (re_moveNPC == true)

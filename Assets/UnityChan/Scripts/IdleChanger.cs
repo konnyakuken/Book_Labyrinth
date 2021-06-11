@@ -19,6 +19,7 @@ namespace UnityChan
 	{
 		public TurnManager turnManager;
 		public DiceButton diceButton;
+		public PopupScript popupScript;
 
 		private Animator anim;						// Animatorへの参照
 		private AnimatorStateInfo currentState;		// 現在のステート状態を保存する参照
@@ -54,7 +55,10 @@ namespace UnityChan
                 // ブーリアンNextをtrueにする
                 //anim.SetBool("Next", true);
             }
-            else
+            else if (anime_flag == true)
+            {
+
+            }else
             {
 				anim.SetInteger("Now", 0);
 			}

@@ -16,6 +16,8 @@ public class SkillScript : MonoBehaviour
     public Button skil_on;
 
     public TurnManager turnManager;
+    public PopupScript popupScript;
+
     [SerializeField]
     public GameObject select_dice_number;//好きな出目を選択
     public int select_dice_num = 1;
@@ -290,10 +292,14 @@ public class SkillScript : MonoBehaviour
         {
             case 1://強奪
                 turnManager.page[select_player] -= dice_result;
+                popupScript.telop_flag = 6;
+                popupScript.skil_flag = true;
                 turnManager.page[turnManager.currentPlayer % 4] += dice_result;//出目×２のページを獲得
                 break;
             case 2://破壊
                 random_player = Random.Range(0, 4);
+                popupScript.telop_flag = 7;
+                popupScript.skil_flag = true;
                 turnManager.page[random_player] -= dice_result;
                 break;
         }
@@ -312,7 +318,9 @@ public class SkillScript : MonoBehaviour
         random_player = Random.Range(0, 4);
         //random_player = 0;
         turnManager.player[random_player].GetComponent<PlayerScript>().rest_flag = true;
-        Debug.Log("P" + (random_player+1)+"の休み");
+        //Debug.Log("P" + (random_player+1)+"の休み");
+        popupScript.telop_flag = 8;
+        popupScript.skil_flag = true;
 
         GetComponent<DiceButton>().skil_end = true;//終了処理
         skil_text_all.SetActive(true);

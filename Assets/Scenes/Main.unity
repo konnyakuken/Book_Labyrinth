@@ -7681,6 +7681,7 @@ MonoBehaviour:
   back: {fileID: 1764329218}
   skil_on: {fileID: 454893544}
   turnManager: {fileID: 599851364}
+  popupScript: {fileID: 599851365}
   select_dice_number: {fileID: 1087239564}
   select_dice_num: 1
   select_number: {fileID: 1896211324}
@@ -7783,8 +7784,10 @@ MonoBehaviour:
   diceButton: {fileID: 599851360}
   telop_flag: 0
   end_flag: 0
+  skil_flag: 0
   telop: {fileID: 1987190300}
   telopText: {fileID: 708873570}
+  animation_flag: 0
 --- !u!114 &599851366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14387,7 +14390,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1059521968}
-  m_LocalRotation: {x: 0.32211447, y: -0.002584869, z: 0.0008795041, w: 0.9466968}
+  m_LocalRotation: {x: 0.32211444, y: -0.0025848278, z: 0.00087948993, w: 0.9466968}
   m_LocalPosition: {x: 0.13, y: 8.360001, z: -18.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -20299,6 +20302,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 599851360}
     - target: {fileID: 11474534, guid: ada6fe60e74b3c84f852f19a76d76872, type: 3}
+      propertyPath: popupScript
+      value: 
+      objectReference: {fileID: 599851365}
+    - target: {fileID: 11474534, guid: ada6fe60e74b3c84f852f19a76d76872, type: 3}
       propertyPath: turnManager
       value: 
       objectReference: {fileID: 599851364}
@@ -23760,6 +23767,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 599851360}
     - target: {fileID: 11468616, guid: 7e0f7737a40453040a6beb5f9d8a599b, type: 3}
+      propertyPath: popupScript
+      value: 
+      objectReference: {fileID: 599851365}
+    - target: {fileID: 11468616, guid: 7e0f7737a40453040a6beb5f9d8a599b, type: 3}
       propertyPath: turnManager
       value: 
       objectReference: {fileID: 599851364}
@@ -23852,6 +23863,10 @@ PrefabInstance:
       propertyPath: diceButton
       value: 
       objectReference: {fileID: 599851360}
+    - target: {fileID: 11443334, guid: 2774cf9769544e141996fef21c3e26e3, type: 3}
+      propertyPath: popupScript
+      value: 
+      objectReference: {fileID: 599851365}
     - target: {fileID: 11443334, guid: 2774cf9769544e141996fef21c3e26e3, type: 3}
       propertyPath: turnManager
       value: 
@@ -28505,12 +28520,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnManager: {fileID: 599851364}
   diceButton: {fileID: 599851360}
+  popupScript: {fileID: 599851365}
   _random: 0
   _threshold: 0.5
   _interval: 10
   isGUI: 0
   next_flag: 0
   anime_switching: 0
+  anime_flag: 0
 --- !u!114 &1932909619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30411,7 +30428,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2101142927}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -409, y: -302, z: 0.31043202}
+  m_LocalPosition: {x: -409, y: -283, z: 0.31043202}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 345128183}

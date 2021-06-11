@@ -10,12 +10,16 @@ public class PopupScript : MonoBehaviour
     public SkillScript skillScript;
     public DiceButton diceButton;
 
+
     //0=none、1=bounus、2=minus、3=Move、4=Warp、5=Random、6= Gamble（強奪）、7=破壊、8=gamble
     public int telop_flag = 0;
     public bool end_flag = false;//DOtween内にターン終了処理を入れるとおかしくなった為
+    public bool skil_flag = false;
 
     public GameObject telop;
     public Text telopText;
+
+    public int animation_flag = 0;//0=none、1=bounus、2=minus
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +30,7 @@ public class PopupScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ( turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().effect_flag == true)//turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false&&
+        if ( turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().effect_flag == true|| skil_flag == true)//turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false&&
         {
             switch (telop_flag)
             {//0=none、1=bounus、2=minus、3=Move、4=Warp、5=Random、6= Gamble（強奪）、7=破壊、8=gamble
@@ -36,6 +40,7 @@ public class PopupScript : MonoBehaviour
                 case 1:
                     telop.SetActive(true);
                     telopText.text = diceButton.Dice_Effect + "ページ獲得！";
+                    animation_flag = 1;
                     telop_flag = 0;
                     DOVirtual.DelayedCall(1.5f, () => {
                         telop.SetActive(false);
@@ -51,6 +56,7 @@ public class PopupScript : MonoBehaviour
                 case 2:
                     telop.SetActive(true);
                     telopText.text = diceButton.Dice_Effect + "ページ消失！";
+                    animation_flag = 2;
                     telop_flag = 0;
                     DOVirtual.DelayedCall(1.5f, () => {
                         telop.SetActive(false);
@@ -67,14 +73,52 @@ public class PopupScript : MonoBehaviour
                     });
                     break;
                 case 4:
+                    telop.SetActive(true);
+                    telopText.text = "ワープ!";
+                    telop_flag = 0;
+                    DOVirtual.DelayedCall(1.5f, () => {
+                        telop.SetActive(false);
+
+                    });
                     break;
                 case 5:
+                    telop.SetActive(true);
+                    telopText.text = "ランダム効果!";
+                    telop_flag = 0;
+                    DOVirtual.DelayedCall(1.5f, () => {
+                        telop.SetActive(false);
+
+                    });
                     break;
                 case 6:
+                    telop.SetActive(true);
+                    telopText.text = (skillScript.select_player + 1).ToString() + "Pは" + skillScript.dice_result.ToString() + "枚奪われた!";
+                    telop_flag = 0;
+                    skil_flag = false;
+                    DOVirtual.DelayedCall(1.5f, () => {
+                        telop.SetActive(false);
+
+                    });
                     break;
                 case 7:
+                    telop.SetActive(true);
+                    telopText.text = (skillScript.random_player + 1).ToString() + "Pは"+ skillScript.dice_result.ToString()+"枚失った!";
+                    telop_flag = 0;
+                    skil_flag = false;
+                    DOVirtual.DelayedCall(1.5f, () => {
+                        telop.SetActive(false);
+
+                    });
                     break;
                 case 8:
+                    telop.SetActive(true);
+                    telopText.text = (skillScript.random_player+1).ToString()+"P 1ターン休み!";
+                    telop_flag = 0;
+                    skil_flag = false;
+                    DOVirtual.DelayedCall(1.5f, () => {
+                        telop.SetActive(false);
+
+                    });
                     break;
             }
         }
