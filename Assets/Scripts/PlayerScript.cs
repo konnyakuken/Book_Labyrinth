@@ -55,6 +55,8 @@ public class PlayerScript : MonoBehaviour
     public bool select_com = false;//初回の一回判定
 
     public bool re_moveNPC = false;//moveを踏んだ後移動マスが-1になる為苦肉の策
+    public bool re_moveNPCflag = false;//移動マスを+１にしたため、表示調整
+    public bool re_moveflag = false;//プレイヤーがMove分岐時に進行方向を向く為
 
 
     public bool rest_flag = false;
@@ -70,6 +72,8 @@ public class PlayerScript : MonoBehaviour
     public int direction_anime = 0;//方向転換
     public int direction = 1;//1=down、2=up、3=left、4=right
     public GameObject anime_object;
+
+    public bool effect_flag = false;//何回も同じ処理が実行されないようにする為
 
     // Start is called before the first frame update
     void Start()
@@ -112,7 +116,8 @@ public class PlayerScript : MonoBehaviour
                     if (start_branch == true)
                         branch_flag = true;
 
-                    Rotation_Check();
+                    if(re_moveflag == false)
+                        Rotation_Check();
 
                     branch_on = false;
                     move_mass = diceButton.select_num;//diceのダイスの出目
@@ -172,12 +177,44 @@ public class PlayerScript : MonoBehaviour
 
             if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true)//ターン終了処理
             {
-                anime_flagNum = 0;
+                /*//NPCのターン終了後動きを止まらせたいのだが、これだとエラーが出て上手く実装出来ない
+                anime_flagNum = 0;//歩くアニメの停止
+                if (Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg == false)
+                {
+                    Hidden_massflag.GetComponent<MeshRenderer>().enabled = false;//MeshRendererをoffにする
+                    Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg = true;
+                }
+
+
+                if (mass_name == 3 && computer == true)//CPのmoveじゃない時のみ
+                {
+
+                }
+                else
+                {
+                    direction = 1;
+                    anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
+                }
+
+                if (computer == true)
+                {
+                    DOVirtual.DelayedCall(0.7f, () => {
+                        Mass_status();
+                        Debug.Log(mass_name);
+                    });
+                }
+                else
+                {
+                    Mass_status();
+                    Debug.Log(mass_name);
+                }*/
+                anime_flagNum = 0;//歩くアニメの停止
                 if (Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg==false)
                 {
                     Hidden_massflag.GetComponent<MeshRenderer>().enabled=false;//MeshRendererをoffにする
                     Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg = true;
                 }
+
                 if(mass_name == 3&& computer == true)//CPのmoveじゃない時のみ
                 {
 
@@ -187,11 +224,7 @@ public class PlayerScript : MonoBehaviour
                     direction = 1;
                     anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
                 }
-                /*anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//この中に入れたいけど上手くいかないのでとりあえず放置
-                {
-                    
-                    
-                });*/
+
                 Mass_status();
                 Debug.Log(mass_name);
             }
@@ -231,7 +264,7 @@ public class PlayerScript : MonoBehaviour
             Hidden_massflag = other.gameObject;
     }
 
-    private void OnCollisionEnter(Collision col)//ターン開始時にonCollisonEnterを判定することになってる？
+    private void OnCollisionEnter(Collision col)//ターン開始時にonCollisonEnterを判定することになってる
     {
         //Debug.Log(move_mass);
 
@@ -343,13 +376,32 @@ public class PlayerScript : MonoBehaviour
 
                 }
             }
+            else if(count==1)//1マスの時のアニメーション判定
+            {
+                if (col.gameObject.GetComponent<MassManager>().isLeft == true)
+                {
+                    direction_anime = 3;
+                }
+                else if (col.gameObject.GetComponent<MassManager>().isRight == true)
+                {
+                    direction_anime = 4;
+                }
+                else if (col.gameObject.GetComponent<MassManager>().isUp == true)
+                {
+                    direction_anime = 2;
+                }
+                else if (col.gameObject.GetComponent<MassManager>().isDown == true)
+                {
+                    direction_anime = 1;
+                }
+            }
 
-            if (move_mass == 1 && mass_name == 3&& count > 1)//止まるマスがMoveかつ分岐があるとき  分岐ボタンが早く出るため対策
+            if ( mass_name == 3&& count > 1)//止まるマスがMoveかつ分岐があるとき  分岐ボタンが早く出るため対策move_mass == 1 &&
             {
                 if (computer == false)
                 {
                     Debug.Log("何処へ行きますか？");
-
+                    re_moveflag = true;
                     move_one = false;
 
                     branch_on = true;
@@ -383,7 +435,8 @@ public class PlayerScript : MonoBehaviour
         this.transform.DOMove(new Vector3(next_x, 0.6f, next_z), 0.5f).OnComplete(() =>//移動終了後実行
         {
             move_mass -= 1;
-            
+            re_moveflag = false;
+
             if (move_mass == 0)
             {
                 move = false;
@@ -392,6 +445,11 @@ public class PlayerScript : MonoBehaviour
             else
             {
                 move_one = true;
+            }
+
+            if(re_moveNPC == true)//NPCのMove対策
+            {
+                re_moveNPC = false;
             }
 
             if (direction_anime != direction)//一致するのなら
@@ -473,6 +531,7 @@ public class PlayerScript : MonoBehaviour
             case 3:
                 if (computer == false)
                 {
+                    
                     diceButton.move_Buttonflag = 0;
                     turn_end = false;
                     transform.position=new Vector3(next_x, 0.68f, next_z);//oncollisonenterを発生させるため
@@ -524,7 +583,7 @@ public class PlayerScript : MonoBehaviour
 
     public void SwitchPlayer()
     {
-        re_moveNPC = false;
+        
         turn_end = false;
         
         my_turn = false;
@@ -562,6 +621,7 @@ public class PlayerScript : MonoBehaviour
         anime_flagNum = 1;
         if (re_moveNPC == true)
         {
+
             move_mass += 1;
         }
         

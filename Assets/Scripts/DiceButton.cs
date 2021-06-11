@@ -9,7 +9,8 @@ public class DiceButton : MonoBehaviour
 {
     public TurnManager turnManager;
     public SkillScript skillscript;
-
+    public PopupScript popupScript;
+    
 
     public GameObject[] player;
     [SerializeField]
@@ -63,6 +64,8 @@ public class DiceButton : MonoBehaviour
 
     public GameObject Dice_number;
     public Text Dice_numberText;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -155,7 +158,13 @@ public class DiceButton : MonoBehaviour
 
         }
 
-        Dice_numberText.text = (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass).ToString();//Diceカウント表示
+        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().re_moveNPC == true)
+        {
+            Dice_numberText.text = (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass-1).ToString();//追加分の減少
+        }
+        else
+            Dice_numberText.text = (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass).ToString();//Diceカウント表示
+
         if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move == true)
             Dice_number.SetActive(true);
         else
@@ -168,24 +177,28 @@ public class DiceButton : MonoBehaviour
     public void Dice()
     {
         Dice_Effect = Random.Range(1, 7);// 今回は１〜６の目が出るダイス
+        Dice_Effect *= 2;
         if(Dice_Buttonflag == 1)
         {
-            turnManager.page[turnManager.currentPlayer % 4] += Dice_Effect * 2;//出目×２のページを獲得
-            Debug.Log(Dice_Effect * 2+"枚のページを獲得！");
+            turnManager.page[turnManager.currentPlayer % 4] += Dice_Effect;//出目×２のページを獲得
+            popupScript.telop_flag = 1;
+            Debug.Log(Dice_Effect+"枚のページを獲得！");
         }
         else if(Dice_Buttonflag == 2)
         {
-            turnManager.page[turnManager.currentPlayer % 4] -= Dice_Effect * 2;//出目×２のページを失う
-            Debug.Log(Dice_Effect * 2 + "枚のページを紛失！");
+            if (turnManager.page[turnManager.currentPlayer % 4]-Dice_Effect <= 0)
+                Dice_Effect=turnManager.page[turnManager.currentPlayer % 4] ;//マイナスにならないように調整
+            turnManager.page[turnManager.currentPlayer % 4] -= Dice_Effect;//出目×２のページを失う
+            popupScript.telop_flag = 2;
+            Debug.Log(Dice_Effect + "枚のページを紛失！");
         }
             
 
-        if (turnManager.page[turnManager.currentPlayer % 4] <= 0)
-            turnManager.page[turnManager.currentPlayer % 4] = 0;//マイナスにならないように調整
+        
 
         Dice_Buttonflag = 0;
         Dice_Button.SetActive(false);
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
+        //player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
     }
 
     public void create_bookButton()//本を作成する関数
@@ -314,7 +327,6 @@ public class DiceButton : MonoBehaviour
         skil_board.SetActive(false);
 
         
-
         skillscript.StopCoroutine(skillscript._someCoroutine);
         skillscript.warning.SetActive(false);
         skillscript.skil_on.interactable = true;
