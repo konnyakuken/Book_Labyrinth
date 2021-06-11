@@ -105,9 +105,6 @@ public class PlayerScript : MonoBehaviour
 
         if (my_turn == true)
         {
-            
-
-            
 
             if (computer == false)
             {
@@ -175,7 +172,7 @@ public class PlayerScript : MonoBehaviour
                 move = false;
             }
 
-            if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true)//ターン終了処理
+            if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true && effect_flag == false)//ターン終了処理
             {
                 /*//NPCのターン終了後動きを止まらせたいのだが、これだとエラーが出て上手く実装出来ない
                 anime_flagNum = 0;//歩くアニメの停止
@@ -208,6 +205,7 @@ public class PlayerScript : MonoBehaviour
                     Mass_status();
                     Debug.Log(mass_name);
                 }*/
+                effect_flag = true;
                 anime_flagNum = 0;//歩くアニメの停止
                 if (Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg==false)
                 {
@@ -436,6 +434,7 @@ public class PlayerScript : MonoBehaviour
         {
             move_mass -= 1;
             re_moveflag = false;
+            effect_flag = false;
 
             if (move_mass == 0)
             {

@@ -33,7 +33,7 @@ namespace UnityChan
 
 		public int next_flag = 0;
 		public bool anime_switching = false;
-
+		public bool anime_flag = false;//1回だけ実行する
 		
 
 		void Start ()
@@ -128,7 +128,7 @@ namespace UnityChan
 				// ブーリアンBackをtrueにする
 				anim.SetBool ("Back", true);
 			}*/
-			/*
+			
 			// "Next"フラグがtrueの時の処理
 			if (anim.GetBool ("Next")) {
 				// 現在のステートをチェックし、ステート名が違っていたらブーリアンをfalseに戻す
@@ -148,7 +148,7 @@ namespace UnityChan
 					previousState = currentState;
 				}
 			}
-			*/
+			
 		}
 
 		void OnGUI ()

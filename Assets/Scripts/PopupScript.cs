@@ -12,43 +12,59 @@ public class PopupScript : MonoBehaviour
 
     //0=none、1=bounus、2=minus、3=Move、4=Warp、5=Random、6= Gamble（強奪）、7=破壊、8=gamble
     public int telop_flag = 0;
-
+    public bool end_flag = false;//DOtween内にターン終了処理を入れるとおかしくなった為
 
     public GameObject telop;
     public Text telopText;
     // Start is called before the first frame update
     void Start()
     {
+        DG.Tweening.DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 200);//キャパシティの増加
         telop.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false)
+        if ( turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().effect_flag == true)//turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == false&&
         {
             switch (telop_flag)
             {//0=none、1=bounus、2=minus、3=Move、4=Warp、5=Random、6= Gamble（強奪）、7=破壊、8=gamble
                 case 0:
-                    telop.SetActive(false);
+                    
                     break;
                 case 1:
+                    telop.SetActive(true);
                     telopText.text = diceButton.Dice_Effect + "ページ獲得！";
-                    DOVirtual.DelayedCall(3f, () => {
-                        //telop.SetActive(false);
-                        telop_flag = 0;
+                    telop_flag = 0;
+                    DOVirtual.DelayedCall(1.5f, () => {
+                        telop.SetActive(false);
+                        turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().effect_flag = false;
+                        Debug.Log("end!!");
+                        telop.SetActive(false);
                         turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
+                        //end_flag = true;
+
                     });
+
                     break;
                 case 2:
+                    telop.SetActive(true);
                     telopText.text = diceButton.Dice_Effect + "ページ消失！";
-                    DOVirtual.DelayedCall(3f, () => {
-                        //telop.SetActive(false);
-                        telop_flag = 0;
+                    telop_flag = 0;
+                    DOVirtual.DelayedCall(1.5f, () => {
+                        telop.SetActive(false);
                         turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
                     });
                     break;
                 case 3:
+                    telop.SetActive(true);
+                    telopText.text ="もう一度ダイスを振る!";
+                    telop_flag = 0;
+                    DOVirtual.DelayedCall(1.5f, () => {
+                        telop.SetActive(false);
+                        
+                    });
                     break;
                 case 4:
                     break;
@@ -62,7 +78,14 @@ public class PopupScript : MonoBehaviour
                     break;
             }
         }
+
+        if (end_flag == true)
+        {
+            end_flag = false;
+            turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
+        }
     }
+
     /*
     public IEnumerator DiceEffect_stop()
     {

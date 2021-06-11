@@ -7027,6 +7027,7 @@ MonoBehaviour:
   direction_anime: 0
   direction: 0
   anime_object: {fileID: 1932909617}
+  effect_flag: 0
 --- !u!54 &553419900
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7781,6 +7782,7 @@ MonoBehaviour:
   skillScript: {fileID: 599851361}
   diceButton: {fileID: 599851360}
   telop_flag: 0
+  end_flag: 0
   telop: {fileID: 1987190300}
   telopText: {fileID: 708873570}
 --- !u!114 &599851366
@@ -9637,7 +9639,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d66e7d4bafdd3a84ea021c148da04ed8, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d66e7d4bafdd3a84ea021c148da04ed8, type: 3}
       propertyPath: m_LocalScale.x
@@ -13090,7 +13092,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &939700126
 GameObject:
@@ -14385,7 +14387,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1059521968}
-  m_LocalRotation: {x: 0.32211444, y: -0.0025848278, z: 0.00087948993, w: 0.9466968}
+  m_LocalRotation: {x: 0.32211447, y: -0.002584869, z: 0.0008795041, w: 0.9466968}
   m_LocalPosition: {x: 0.13, y: 8.360001, z: -18.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -18072,6 +18074,7 @@ MonoBehaviour:
   direction_anime: 0
   direction: 0
   anime_object: {fileID: 676391771}
+  effect_flag: 0
 --- !u!1001 &1281076784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21204,6 +21207,7 @@ MonoBehaviour:
   direction_anime: 0
   direction: 0
   anime_object: {fileID: 782870687}
+  effect_flag: 0
 --- !u!54 &1455250128
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -23741,6 +23745,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11405412, guid: 7e0f7737a40453040a6beb5f9d8a599b, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11416900, guid: 7e0f7737a40453040a6beb5f9d8a599b, type: 3}
+      propertyPath: isKeepFace
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11468616, guid: 7e0f7737a40453040a6beb5f9d8a599b, type: 3}
@@ -29773,6 +29781,7 @@ MonoBehaviour:
   direction_anime: 0
   direction: 0
   anime_object: {fileID: 751112686}
+  effect_flag: 0
 --- !u!54 &2041128698
 Rigidbody:
   m_ObjectHideFlags: 0

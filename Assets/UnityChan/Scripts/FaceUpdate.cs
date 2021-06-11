@@ -18,7 +18,8 @@ namespace UnityChan
 
 		void OnGUI ()
 		{
-			isKeepFace = false;
+			
+			//isKeepFace = false;
 			if (isGUI)
             {
                 GUILayout.Box("Face Update", GUILayout.Width(170), GUILayout.Height(25 * (animations.Length + 2)));
