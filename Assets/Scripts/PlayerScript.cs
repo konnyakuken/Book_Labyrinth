@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;  //DOTweenを使うときはこのusingを入れる
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerScript : MonoBehaviour
@@ -135,6 +136,7 @@ public class PlayerScript : MonoBehaviour
                     diceButton.move_Buttonflag = 2;//ボタンを非表示に
                     move_one = true;
                     anime_flagNum = 1;
+                    //move_mass *= 6;
                 }
             }
             else if (computer == true && select_com == true)
@@ -144,7 +146,6 @@ public class PlayerScript : MonoBehaviour
                     rest_flag = false;
                     start_count = 0;
                     move_mass = 8;
-                    //transform.position = new Vector3(next_x, 0.6f, next_z);
 
                     next_x += differ_x;
                     next_z += differ_z;
@@ -445,6 +446,7 @@ public class PlayerScript : MonoBehaviour
             }
 
             
+            
             if (direction_anime != direction)//一致するのなら
             {//1=down、2=up、3=left、4=right
                 switch (direction_anime)
@@ -592,7 +594,16 @@ public class PlayerScript : MonoBehaviour
                 Mass_status();
                 break;
             case 6:
+                if (book_flag == true)
+                {
+                    DiceButton.winner = turnManager.currentPlayer % 4 + 1;
+                    turnManager.bgm.Victory();
+                    mass_name = 7;
+                }
+                else
                 SwitchPlayer();
+                break;
+            case 7:
                 break;
 
         }
@@ -636,7 +647,7 @@ public class PlayerScript : MonoBehaviour
             {
                 move_mass = diceButton.Move_result2;                    
             }
-        //move_mass = 4;
+        //move_mass *= 100;
         Debug.Log("出たマス数:" + move_mass);
         anime_flagNum = 1;
         if (re_moveNPC == true)

@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class TurnManager : MonoBehaviour
 {
     public DiceButton diceButton;
+    public BGMScript bgm;
 
     public int turn = 0;//ターン管理　スタート停止も判定
     public int last_turn = 0;
@@ -117,17 +118,23 @@ public class TurnManager : MonoBehaviour
 
         if (player[currentPlayer % 4].GetComponent<PlayerScript>().computer == false&& GetComponent<DiceButton>().skil_flag == false&&diceButton.move_Buttonflag == 0)//100を超えたら本を作成するボタンをonにする
         {
-            //Debug.Log(page[currentPlayer % 4]);
-            if (page[currentPlayer % 4] >= 100)
-                create_book.SetActive(true);
-            else
-                create_book.SetActive(false);
+                //Debug.Log(page[currentPlayer % 4]);
+                if (page[currentPlayer % 4] >= 100&& player[currentPlayer % 4].GetComponent<PlayerScript>().book_flag == false)
+                    create_book.SetActive(true);
+                else
+                    create_book.SetActive(false);
+                
 
         }
         else if (page[currentPlayer % 4] >= 100 && player[currentPlayer % 4].GetComponent<PlayerScript>().my_turn == true && player[currentPlayer % 4].GetComponent<PlayerScript>().turn_end == false && player[currentPlayer % 4].GetComponent<PlayerScript>().computer == true&& diceButton.move_Buttonflag == 0)
         {
-            //100を超えたら本を作成するボタンをonにする)
-            GetComponent<DiceButton>().create_bookButton();
+            if(player[currentPlayer % 4].GetComponent<PlayerScript>().book_flag == false)
+            {
+                //100を超えたら本を作成するボタンをonにする)
+                GetComponent<DiceButton>().create_bookButton();
+                bgm.chenge_BGM = true;
+            }
+            
         }
         else
             create_book.SetActive(false);

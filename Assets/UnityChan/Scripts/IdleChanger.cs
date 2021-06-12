@@ -50,6 +50,10 @@ namespace UnityChan
 		// Update is called once per frame
 		void  Update ()
 		{
+            if (turnManager.bgm.vIctory_anime == true)
+            {
+				anim.SetBool("Back", true);
+			}
 
 			if (turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().anime_flagNum == 1&& turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag == false) {
 				anim.SetInteger("Now",1);

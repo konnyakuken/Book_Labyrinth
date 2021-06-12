@@ -66,6 +66,7 @@ public class DiceButton : MonoBehaviour
     public Text Dice_numberText;
 
     public int emotions_anime = 0;//0=none,1=bounus,2=minus
+    public bool end_flag = false;//何回もクリアが呼び出されないようにする為
 
     // Start is called before the first frame update
     void Start()
@@ -136,9 +137,10 @@ public class DiceButton : MonoBehaviour
             stop_Button.SetActive(false);
 
 
-        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == true && player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().book_flag == true&& stop_button_flag == 1)
+        if (player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer == true && player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().book_flag == true&& stop_button_flag == 1&& end_flag == false)
         {//本を持ったコンピューター
             Stop_mass();
+            end_flag = true;
         }
 
         //0=up,1=down,2=right,3=left
@@ -207,6 +209,7 @@ public class DiceButton : MonoBehaviour
         //turnManager.create_book[turnManager.currentPlayer % 4] = true;
         player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().book_flag = true;
         turnManager.book_image[turnManager.currentPlayer % 4].SetActive(true);
+        turnManager.bgm.chenge_BGM = true;
     }
 
 
@@ -216,16 +219,32 @@ public class DiceButton : MonoBehaviour
         if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().book_flag == true)
         {
             winner = turnManager.currentPlayer % 4 + 1;
-            SceneManager.LoadScene("result");//シーン切り替え
+            if(player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().computer==true)
+                player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass = 1;//NPCはmove_DOTween前に選択するため
+            else
+            {
+                player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass = 0;
+                player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag = false;
+                stop_button_flag = 0;
+                for (int i = 0; i < 4; i++)
+                    branch_Button[i].SetActive(false);
+            }
+           
+            //turnManager.bgm.Victory();
+            //SceneManager.LoadScene("result");//シーン切り替え
         }
-        stop_button_flag = 0;
-        stop_Button.SetActive(false);
-        for (int i = 0; i < 4; i++)
-            branch_Button[i].SetActive(false);
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass = 0;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_count = 0;
-        player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
-        stop_button_flag = 0;
+        else
+        {
+            stop_button_flag = 0;
+            stop_Button.SetActive(false);
+            for (int i = 0; i < 4; i++)
+                branch_Button[i].SetActive(false);
+            player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().move_mass = 0;
+            player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().start_count = 0;
+            player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
+            stop_button_flag = 0;
+        }
+        
     }
 
     public void Move_click()
