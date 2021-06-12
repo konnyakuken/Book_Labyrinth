@@ -161,8 +161,13 @@ public class PlayerScript : MonoBehaviour
                     
 
                     NPC_move();
-                    
-                    Rotation_Check();
+                    if (start_branch == false)
+                    {
+                        Rotation_Check();
+                    }
+                    else
+                        direction_anime = direction;
+
                     turn_end = true;
                     move = true;
                     select_com = false;
@@ -439,6 +444,7 @@ public class PlayerScript : MonoBehaviour
                 re_moveNPC = false;
             }
 
+            
             if (direction_anime != direction)//一致するのなら
             {//1=down、2=up、3=left、4=right
                 switch (direction_anime)
@@ -542,7 +548,24 @@ public class PlayerScript : MonoBehaviour
                 popupScript.telop_flag = 4;
                 move_mass = 0;//念入れの代入（NPCがワープ後に動く挙動を見せたためとりあえず）
                 warp_mass =Random.Range(0, 69);
+                
+
+                while (!(warp_mass != 4 && warp_mass != 59 && warp_mass != 42))//分岐マスに移動後次のターンで移動をしようとするとおかしくなるため応急処置
+                {//分岐マスに飛ばないようにする
+                    warp_mass = Random.Range(0, 69);
+                    Debug.Log(warp_mass);
+                }
+                    
                 //warp_mass = 42;
+
+                /*
+                //分岐マスに止まった時用
+                map.mass[warp_mass].GetComponent<MassManager>();
+                BranchProcess();
+                Debug.Log("start" + count);
+                if (count > 1)
+                    start_branch = true;
+                */
 
                 warp_position =  map.mass[warp_mass].transform.position;
                 warp_position.y = 0.6f;
@@ -554,6 +577,7 @@ public class PlayerScript : MonoBehaviour
                 
                 DOVirtual.DelayedCall(0.7f, () => {
                     this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+                    
                     next_x += differ_x;
                     next_z += differ_z;
                     SwitchPlayer();
@@ -611,7 +635,7 @@ public class PlayerScript : MonoBehaviour
             {
                 move_mass = diceButton.Move_result2;                    
             }
-        move_mass = 4;
+        //move_mass = 4;
         Debug.Log("出たマス数:" + move_mass);
         anime_flagNum = 1;
         if (re_moveNPC == true)
