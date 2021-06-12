@@ -10,6 +10,7 @@ public class PlayerScript : MonoBehaviour
     public DiceButton diceButton;
     public Mapscript map;
     public TurnManager turnManager;
+    public PopupScript popupScript;
 
     public GameObject player;//プレイヤーの現在地を配列で表現,onoff
     public bool computer = false;//comか否かを判定
@@ -75,6 +76,10 @@ public class PlayerScript : MonoBehaviour
 
     public bool effect_flag = false;//何回も同じ処理が実行されないようにする為
 
+    private MassManager massManager;
+    public bool branch_move_flag = false;
+
+    public int count = 0;//分岐の数
     // Start is called before the first frame update
     void Start()
     {
@@ -111,10 +116,15 @@ public class PlayerScript : MonoBehaviour
                 if (dice_select == true)//ダイスが振られた時trueになる(DiceButtonスクリプトからbool)
                 {
                     if (start_branch == true)
+                    {
                         branch_flag = true;
-
-                    if(re_moveflag == false)
+                    }
+                    else
+                    {
                         Rotation_Check();
+                    }
+                        
+                        
 
                     branch_on = false;
                     move_mass = diceButton.select_num;//diceのダイスの出目
@@ -151,6 +161,7 @@ public class PlayerScript : MonoBehaviour
                     
 
                     NPC_move();
+                    
                     Rotation_Check();
                     turn_end = true;
                     move = true;
@@ -174,37 +185,7 @@ public class PlayerScript : MonoBehaviour
 
             if (GetComponent<Rigidbody>().IsSleeping()&& move_mass == 0&& turn_end==true && effect_flag == false)//ターン終了処理
             {
-                /*//NPCのターン終了後動きを止まらせたいのだが、これだとエラーが出て上手く実装出来ない
-                anime_flagNum = 0;//歩くアニメの停止
-                if (Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg == false)
-                {
-                    Hidden_massflag.GetComponent<MeshRenderer>().enabled = false;//MeshRendererをoffにする
-                    Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg = true;
-                }
-
-
-                if (mass_name == 3 && computer == true)//CPのmoveじゃない時のみ
-                {
-
-                }
-                else
-                {
-                    direction = 1;
-                    anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
-                }
-
-                if (computer == true)
-                {
-                    DOVirtual.DelayedCall(0.7f, () => {
-                        Mass_status();
-                        Debug.Log(mass_name);
-                    });
-                }
-                else
-                {
-                    Mass_status();
-                    Debug.Log(mass_name);
-                }*/
+               
                 effect_flag = true;
                 anime_flagNum = 0;//歩くアニメの停止
                 if (Hidden_massflag.GetComponent<HiddenScript>().Hidden_falg==false)
@@ -222,9 +203,15 @@ public class PlayerScript : MonoBehaviour
                     direction = 1;
                     anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
                 }
+                
 
                 Mass_status();
                 Debug.Log(mass_name);
+                if (!computer)
+                {
+                    BranchProcess();
+                    Check();
+                }
             }
             
         }
@@ -272,6 +259,8 @@ public class PlayerScript : MonoBehaviour
         branch_Up = false;
         branch_Down = false;
 
+        massManager = col.gameObject.GetComponent<MassManager>();//Massmanagerの値を取得
+        /*
         int count = 0;
         //分岐があるのか判定
         if (col.gameObject.GetComponent<MassManager>().isLeft == true)
@@ -293,9 +282,10 @@ public class PlayerScript : MonoBehaviour
         {
             count++;
             branch_Down = true;
-        }
+        }*/
+        BranchProcess();
 
-        //Debug.Log(count);
+        
         if (col.gameObject.tag == "Start" && start_count >= 1)
         {
             Debug.Log("止まりますか？");
@@ -390,7 +380,7 @@ public class PlayerScript : MonoBehaviour
                     direction_anime = 1;
                 }
             }
-
+            /*
             if ( mass_name == 3&& count > 1)//止まるマスがMoveかつ分岐があるとき  分岐ボタンが早く出るため対策move_mass == 1 &&
             {
                 if (computer == false)
@@ -413,7 +403,7 @@ public class PlayerScript : MonoBehaviour
                         branch_on = true;
                     }
                 }
-            }
+            }*/
         }
 
 
@@ -431,6 +421,7 @@ public class PlayerScript : MonoBehaviour
             move_mass -= 1;
             re_moveflag = false;
             effect_flag = false;
+            
 
             if (move_mass == 0)
             {
@@ -439,6 +430,7 @@ public class PlayerScript : MonoBehaviour
             }
             else
             {
+                start_branch = false;
                 move_one = true;
             }
 
@@ -524,6 +516,8 @@ public class PlayerScript : MonoBehaviour
                 Debug.Log("Minus!");
                 break;
             case 3:
+                effect_flag = true;
+                popupScript.telop_flag = 3;
                 if (computer == false)
                 {
                     
@@ -538,13 +532,18 @@ public class PlayerScript : MonoBehaviour
                     select_com = true;
                     turn_end = false;
                     re_moveNPC = true;
+                
                 }
                 Debug.Log("Move!");
                 break;
             case 4:
                 Debug.Log("Warp!");
+                effect_flag = true;
+                popupScript.telop_flag = 4;
                 move_mass = 0;//念入れの代入（NPCがワープ後に動く挙動を見せたためとりあえず）
                 warp_mass =Random.Range(0, 69);
+                //warp_mass = 42;
+
                 warp_position =  map.mass[warp_mass].transform.position;
                 warp_position.y = 0.6f;
                 this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;//ｙ座標をロック
@@ -584,7 +583,7 @@ public class PlayerScript : MonoBehaviour
         my_turn = false;
         select_com = true;
 
-        start_branch = false;
+        
         this.gameObject.SetActive(false);
         diceButton.move_Buttonflag = 0;//ボタンを非表示に
         diceButton.skil_end = false;//スキルを使用可能に
@@ -612,7 +611,7 @@ public class PlayerScript : MonoBehaviour
             {
                 move_mass = diceButton.Move_result2;                    
             }
-       
+        move_mass = 4;
         Debug.Log("出たマス数:" + move_mass);
         anime_flagNum = 1;
         if (re_moveNPC == true)
@@ -650,6 +649,7 @@ public class PlayerScript : MonoBehaviour
             bool branch_com = false;
             while (branch_com == false)//分岐内の判定チェック
             {
+                selectmass = Random.Range(0, 4);
                 if (branch_Left == true && selectmass == 0)
                 {
                     branch_com = true;
@@ -784,5 +784,61 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public void BranchProcess()
+    {
+        count = 0;
+        //分岐があるのか判定
+        if (massManager.isLeft == true)
+        {
+            count++;
+            branch_Left = true;
+        }
+        if (massManager.isRight == true)
+        {
+            count++;
+            branch_Right = true;
+        }
+        if (massManager.isUp == true)
+        {
+            count++;
+            branch_Up = true;
+        }
+        if (massManager.isDown == true)
+        {
+            count++;
+            branch_Down = true;
+        }
+
+        if (mass_name == 3 && count > 1)//止まるマスがMoveかつ分岐があるとき  分岐ボタンが早く出るため対策move_mass == 1 &&
+        {
+            if (computer == false)
+            {
+                Debug.Log("何処へ行きますか？");
+                //UnityEditor.EditorApplication.isPaused = true;
+                re_moveflag = true;
+                move_one = false;
+
+                branch_on = true;
+            }
+
+            else if (computer == true)
+            {
+                move_one = false;
+                if (start_branch == true)
+                {
+                    NPC_Branch();
+                }
+                else
+                {
+                    
+                    branch_on = true;
+                }
+            }
+        }
+        if (move_mass == 1 && count > 1)
+        {
+            start_branch = true;
+        }
+    }
 
 }

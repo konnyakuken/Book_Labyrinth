@@ -50,15 +50,25 @@ namespace UnityChan
 		// Update is called once per frame
 		void  Update ()
 		{
+
 			if (turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().anime_flagNum == 1&& turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().branch_flag == false) {
 				anim.SetInteger("Now",1);
                 // ブーリアンNextをtrueにする
                 //anim.SetBool("Next", true);
             }
-            else if (anime_flag == true)
+            else if (diceButton.emotions_anime==1)
             {
-
-            }else
+				anim.SetInteger("Now", 2);
+				diceButton.emotions_anime = 0;
+				Debug.Log("嬉しい");
+			}
+			else if(diceButton.emotions_anime == 2)
+            {
+				anim.SetInteger("Now", 3);
+				diceButton.emotions_anime = 0;
+				Debug.Log("悲しい");
+			}
+            else
             {
 				anim.SetInteger("Now", 0);
 			}

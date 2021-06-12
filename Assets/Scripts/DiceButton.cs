@@ -65,7 +65,7 @@ public class DiceButton : MonoBehaviour
     public GameObject Dice_number;
     public Text Dice_numberText;
 
-    
+    public int emotions_anime = 0;//0=none,1=bounus,2=minus
 
     // Start is called before the first frame update
     void Start()
@@ -182,7 +182,7 @@ public class DiceButton : MonoBehaviour
         {
             turnManager.page[turnManager.currentPlayer % 4] += Dice_Effect;//出目×２のページを獲得
             popupScript.telop_flag = 1;
-            Debug.Log(Dice_Effect+"枚のページを獲得！");
+            emotions_anime = 1;
         }
         else if(Dice_Buttonflag == 2)
         {
@@ -190,7 +190,7 @@ public class DiceButton : MonoBehaviour
                 Dice_Effect=turnManager.page[turnManager.currentPlayer % 4] ;//マイナスにならないように調整
             turnManager.page[turnManager.currentPlayer % 4] -= Dice_Effect;//出目×２のページを失う
             popupScript.telop_flag = 2;
-            Debug.Log(Dice_Effect + "枚のページを紛失！");
+            emotions_anime = 2;
         }
             
 

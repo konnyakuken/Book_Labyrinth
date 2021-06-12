@@ -65,7 +65,7 @@ public class PopupScript : MonoBehaviour
                     break;
                 case 3:
                     telop.SetActive(true);
-                    telopText.text ="もう一度ダイスを振る!";
+                    telopText.text ="Moveマス!";
                     telop_flag = 0;
                     DOVirtual.DelayedCall(1.5f, () => {
                         telop.SetActive(false);
