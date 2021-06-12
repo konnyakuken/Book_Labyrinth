@@ -580,6 +580,7 @@ public class PlayerScript : MonoBehaviour
                     
                     next_x += differ_x;
                     next_z += differ_z;
+                    start_branch = false;//分岐かつワープの時、ワープ後もstartブランチが残ってる為
                     SwitchPlayer();
                 });
                 
