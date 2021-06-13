@@ -57,7 +57,8 @@ public class SkillScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _someCoroutine = StartCoroutine(Noruma_lack());
+        //_someCoroutine = StartCoroutine(Noruma_lack());
+
         warning.SetActive(false);
         skil_on.interactable = true;
         next.interactable = true;
@@ -239,6 +240,9 @@ public class SkillScript : MonoBehaviour
             warning_text.text = "必要ページ数が不足しています";
         else if(lack ==2)
             warning_text.text = "残り回数が不足しています";
+        else if (lack == 3)
+            warning_text.text = "スキル名をクリックして発動!";
+
 
         skil_on.interactable = false;
         next.interactable = false;

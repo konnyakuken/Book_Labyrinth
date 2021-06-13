@@ -20,6 +20,7 @@ public class PopupScript : MonoBehaviour
     public Text telopText;
 
     public int animation_flag = 0;//0=none、1=bounus、2=minus
+    public bool move_telopFlag = false;//move後NPCがすぐにボーナスマスなどに踏むと消えるため
     // Start is called before the first frame update
     void Start()
     {
@@ -42,11 +43,13 @@ public class PopupScript : MonoBehaviour
                     telopText.text = diceButton.Dice_Effect + "ページ獲得！";
                     animation_flag = 1;
                     telop_flag = 0;
+                    move_telopFlag = true;
                     DOVirtual.DelayedCall(1.5f, () => {
                         telop.SetActive(false);
                         turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().effect_flag = false;
                         Debug.Log("end!!");
                         telop.SetActive(false);
+                        move_telopFlag = false;
                         turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
                         //end_flag = true;
 
@@ -58,8 +61,10 @@ public class PopupScript : MonoBehaviour
                     telopText.text = diceButton.Dice_Effect + "ページ消失！";
                     animation_flag = 2;
                     telop_flag = 0;
+                    move_telopFlag = true;
                     DOVirtual.DelayedCall(1.5f, () => {
                         telop.SetActive(false);
+                        move_telopFlag = false;
                         turnManager.player[turnManager.currentPlayer % 4].GetComponent<PlayerScript>().SwitchPlayer();
                     });
                     break;
@@ -68,7 +73,8 @@ public class PopupScript : MonoBehaviour
                     telopText.text ="Moveマス!";
                     telop_flag = 0;
                     DOVirtual.DelayedCall(1.5f, () => {
-                        telop.SetActive(false);
+                        if(move_telopFlag == false)
+                            telop.SetActive(false);
                         
                     });
                     break;

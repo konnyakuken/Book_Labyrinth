@@ -67,7 +67,9 @@ public class DiceButton : MonoBehaviour
 
     public int emotions_anime = 0;//0=none,1=bounus,2=minus
     public bool end_flag = false;//何回もクリアが呼び出されないようにする為
+    public bool rule_flag = false;
 
+    public bool[] skil_explain = new bool[4] { false, false, false, false };
     // Start is called before the first frame update
     void Start()
     {
@@ -113,6 +115,10 @@ public class DiceButton : MonoBehaviour
             move_Button.SetActive(false);
             select_Button[0].SetActive(false);
             select_Button[1].SetActive(false);
+            skil_Bottun.SetActive(false);
+        }else if(rule_flag == true)
+        {
+            move_Button.SetActive(false);
             skil_Bottun.SetActive(false);
         }
 
@@ -336,6 +342,12 @@ public class DiceButton : MonoBehaviour
     {
         skil_board.SetActive(true);
         skil_flag = true;
+        if (skil_explain[turnManager.currentPlayer % 4] == false){//NPCでもスキル実装するなら書き換える
+            skillscript.lack = 3;
+            skillscript.StartCoroutine("Noruma_lack");
+            skil_explain[turnManager.currentPlayer % 4] = true;
+        }
+        
     }
 
     public void Skil_close()
@@ -345,8 +357,9 @@ public class DiceButton : MonoBehaviour
         skil_flag = false;
         skil_board.SetActive(false);
 
-        
-        skillscript.StopCoroutine(skillscript._someCoroutine);
+
+        //skillscript.StopCoroutine(skillscript._someCoroutine);
+        skillscript.StopCoroutine(skillscript.StartCoroutine("Noruma_lack"));
         skillscript.warning.SetActive(false);
         skillscript.skil_on.interactable = true;
         skillscript.next.interactable = true;

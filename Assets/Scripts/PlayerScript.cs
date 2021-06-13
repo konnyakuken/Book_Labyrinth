@@ -647,7 +647,7 @@ public class PlayerScript : MonoBehaviour
             {
                 move_mass = diceButton.Move_result2;                    
             }
-        //move_mass *= 100;
+        
         Debug.Log("出たマス数:" + move_mass);
         anime_flagNum = 1;
         if (re_moveNPC == true)
@@ -726,13 +726,14 @@ public class PlayerScript : MonoBehaviour
                     anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
                     anime_object.transform.DORotate(new Vector3(0, 180, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
                     {
-                        //move_one = true;
+                        direction_anime = 1;
                     });
                     break;
                 case 2:
                     anime_object.transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
                     anime_object.transform.DORotate(new Vector3(0, 0, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
                     {
+                        direction_anime = 2;
                        // move_one = true;
                     });
                     break;
@@ -740,6 +741,7 @@ public class PlayerScript : MonoBehaviour
                     anime_object.transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
                     anime_object.transform.DORotate(new Vector3(0, 270, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
                     {
+                        direction_anime = 3;
                         //move_one = true;
                     });
                     break;
@@ -747,6 +749,7 @@ public class PlayerScript : MonoBehaviour
                     anime_object.transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast); //最短で指定の角度まで回転
                     anime_object.transform.DORotate(new Vector3(0, 90, 0), 0.2f, RotateMode.Fast).OnComplete(() =>//移動終了後実行
                     {
+                        direction_anime = 4;
                         //move_one = true;
                     });
                     break;
