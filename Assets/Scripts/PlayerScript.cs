@@ -550,14 +550,13 @@ public class PlayerScript : MonoBehaviour
                 popupScript.telop_flag = 4;
                 move_mass = 0;//念入れの代入（NPCがワープ後に動く挙動を見せたためとりあえず）
                 warp_mass =Random.Range(0, 69);
-                
 
-                while (!(warp_mass != 4 && warp_mass != 59 && warp_mass != 42))//分岐マスに移動後次のターンで移動をしようとするとおかしくなるため応急処置
+                while (!(warp_mass != 4 && warp_mass != 59 && warp_mass != 42&&warp_mass!=0))//分岐マスに移動後次のターンで移動をしようとするとおかしくなるため応急処置
                 {//分岐マスに飛ばないようにする
                     warp_mass = Random.Range(0, 69);
                     Debug.Log(warp_mass);
                 }
-                    
+                
                 //warp_mass = 42;
 
                 /*
@@ -601,7 +600,8 @@ public class PlayerScript : MonoBehaviour
                     mass_name = 7;
                 }
                 else
-                SwitchPlayer();
+                 SwitchPlayer();
+                start_count = 0;
                 break;
             case 7:
                 break;

@@ -22,6 +22,7 @@ public class TurnManager : MonoBehaviour
 
     [SerializeField]
     public GameObject[] cam;
+    public GameObject[] cam_zoom;
 
     [SerializeField]
     public GameObject[] sleep_player;
@@ -90,6 +91,11 @@ public class TurnManager : MonoBehaviour
         cam[2].SetActive(false);
         cam[3].SetActive(false);
 
+        cam_zoom[currentPlayer % 4].SetActive(true);
+        cam_zoom[1].SetActive(false);
+        cam_zoom[2].SetActive(false);
+        cam_zoom[3].SetActive(false);
+
         create_book.SetActive(false);
 
         if (last_turn != turn)
@@ -145,6 +151,8 @@ public class TurnManager : MonoBehaviour
     {
 
         cam[currentPlayer % 4].SetActive(false);
+        cam_zoom[currentPlayer % 4].SetActive(false);
+
         sleep_pos = player[currentPlayer % 4].transform.position;
         sleep_pos.y +=0.6f;
         sleep_player[currentPlayer % 4].transform.position = sleep_pos;
@@ -157,7 +165,10 @@ public class TurnManager : MonoBehaviour
         player_trunText.text =  (currentPlayer % 4 + 1) + "Pのターン";
         sleep_player[currentPlayer % 4].SetActive(false);
         player[currentPlayer % 4].SetActive(true);//プレイヤー表示の切り替え
+
         cam[currentPlayer % 4].SetActive(true);
+        cam_zoom[currentPlayer % 4].SetActive(true);
+
         Invoke("delay_player", 2.0f);
         player[currentPlayer % 4].GetComponent<PlayerScript>().select_com = true;
 
