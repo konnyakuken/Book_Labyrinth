@@ -126,7 +126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4897427805282112, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.6
+      value: -4.1
       objectReference: {fileID: 0}
     - target: {fileID: 4897427805282112, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_LocalPosition.y
@@ -134,7 +134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4897427805282112, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.7
+      value: 7.3
       objectReference: {fileID: 0}
     - target: {fileID: 4897427805282112, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_LocalRotation.w
@@ -166,7 +166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 102706317291859942, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_Text
-      value: "\u24CC"
+      value: w
       objectReference: {fileID: 0}
     - target: {fileID: 102706317291859942, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_FontSize
@@ -182,7 +182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 102706317291859942, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}
       propertyPath: m_CharacterSize
-      value: 0.66
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 337fdfe306dd1be4fb81f5720c041370, type: 3}

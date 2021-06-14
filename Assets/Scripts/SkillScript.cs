@@ -248,7 +248,7 @@ public class SkillScript : MonoBehaviour
         next.interactable = false;
         back.interactable = false;
         //1フレーム停止
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
         //ここに再開後の処理を書く
         warning.SetActive(false);
