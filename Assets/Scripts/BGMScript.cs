@@ -46,7 +46,7 @@ public class BGMScript : MonoBehaviour
             chenge_BGM = false;
             BGM_check = true;
             audioSource.clip = create_book;
-            audioSource.volume = 0.01f;
+            audioSource.volume = 0.02f;
             audioSource.Play();
         }
     }
@@ -55,7 +55,7 @@ public class BGMScript : MonoBehaviour
     {
         Debug.Log("on!");
         audioSource.volume = 0; audioSource.clip = winer_bgm;
-        audioSource.volume = 0.01f;
+        audioSource.volume = 0.02f;
         vIctory_anime = true;
         audioSource.Play();
         DOVirtual.DelayedCall(2f, () => {

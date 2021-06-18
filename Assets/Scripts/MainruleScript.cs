@@ -58,7 +58,7 @@ public class MainruleScript : MonoBehaviour
                 page_numberText.text = now_page + "/8ページ";
                 mass_icon[0].SetActive(false);
                 title.text = "遊び方3";
-                contents.text = "\r\nプレイヤーは「現し世のページ」を\r\n\r\n集めると有利なスキル各ターン1度発動できる！";
+                contents.text = "\r\nプレイヤーは「現し世のページ」を\r\n\r\n集めると有利なスキルを毎ターン1度発動できる！";
                 break;
             case 4:
                 page_numberText.text = now_page + "/8ページ";
